@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
+import { Navigate } from "react-router-dom";
 
 // Configure Firebase.
 const firebaseConfig = {
@@ -55,14 +56,15 @@ function SignInScreen() {
   }
   
   return (
-    <div>
-      <h1>My App</h1>
-      <p>
-        Welcome {firebase.auth().currentUser.displayName}! You are now
-        signed-in!
-      </p>
-      <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
-    </div>
+    <Navigate to="/" />
+    // <div>
+    //   <h1>My App</h1>
+    //   <p>
+    //     Welcome {firebase.auth().currentUser.displayName}! You are now
+    //     signed-in!
+    //   </p>
+    //   <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
+    // </div>
   );
 }
 

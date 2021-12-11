@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import "bootstrap/dist/css/bootstrap.css";
+import firebase from "firebase/compat/app";
 
 class NavBar extends Component {
   render() {
@@ -15,6 +17,32 @@ class NavBar extends Component {
               </svg>
               <span className="fs-4">Analysis Console</span>
             </a>
+
+            <span className="dropdown">
+              <button
+                className="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Welcome {firebase.auth().currentUser.email}
+              </button>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="dropdownMenuButton1"
+              >
+                <li>
+                  <a
+                    className="dropdown-item"
+                    onClick={() => firebase.auth().signOut()}
+                    href="/login"
+                  >
+                    Sign out
+                  </a>
+                </li>
+              </ul>
+            </span>
           </header>
         </div>
       </section>
