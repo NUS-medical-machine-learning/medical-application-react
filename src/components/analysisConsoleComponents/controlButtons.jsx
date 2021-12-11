@@ -1,9 +1,36 @@
+import React, { Component } from "react";
 import {
   BREATH_INLET_SERVICE_URL,
   COMPOUND_DETECTION_SERVICE_URL,
-} from "../apiCalls/common";
+} from "../../apiCalls/common";
 
-export const postCancelSample = () => {
+class ControlButtons extends Component {
+  render() {
+    return (
+      <div className="row">
+        <div className="col">
+          <h3 className="mb-3 mb-md-0">Subject Info</h3>
+        </div>
+        <div className="col">
+          <button
+            onClick={handleBreatheStop}
+            className="btn btn-secondary btn-lg float-end ms-3"
+          >
+            Stop
+          </button>
+          <button
+            onClick={handleBreatheStart}
+            className="btn btn-primary btn-lg float-end"
+          >
+            Start
+          </button>
+        </div>
+      </div>
+    );
+  }
+}
+
+const postCancelSample = () => {
   return fetch(`${COMPOUND_DETECTION_SERVICE_URL}/events`, {
     method: "POST",
     headers: {
@@ -15,7 +42,7 @@ export const postCancelSample = () => {
   });
 };
 
-export const postValveIsRegulated = (boolean) => {
+const postValveIsRegulated = (boolean) => {
   return fetch(`${BREATH_INLET_SERVICE_URL}/flow`, {
     method: "POST",
     headers: {
@@ -25,7 +52,7 @@ export const postValveIsRegulated = (boolean) => {
   });
 };
 
-export const postStartStopBreathe = (action) => {
+const postStartStopBreathe = (action) => {
   return fetch(`${COMPOUND_DETECTION_SERVICE_URL}/detection`, {
     method: "POST",
     headers: {
@@ -35,7 +62,7 @@ export const postStartStopBreathe = (action) => {
   }).then((res) => res.json());
 };
 
-export const handleBreatheStart = () => {
+const handleBreatheStart = () => {
   //   breathDispatch({ eventStatus: "Start isLoading" });
   postValveIsRegulated(true)
     .then((data) => {
@@ -55,7 +82,7 @@ export const handleBreatheStart = () => {
     .catch((err) => console.log(err));
 };
 
-export const handleBreatheStop = () => {
+const handleBreatheStop = () => {
   //   breathDispatch({ eventStatus: "Stop isLoading" });
 
   postValveIsRegulated(false)
@@ -77,3 +104,6 @@ export const handleBreatheStop = () => {
     })
     .catch((err) => console.log(err.message));
 };
+
+
+export default ControlButtons;
