@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
   BREATH_INLET_SERVICE_URL,
   COMPOUND_DETECTION_SERVICE_URL,
-} from "../apiCalls/common";
+} from "../../apiCalls/common";
 
 class ControlButtons extends Component {
   render() {
