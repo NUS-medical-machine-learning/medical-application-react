@@ -1,4 +1,3 @@
-import './App.css';
 import NavBar from './components/navbar';
 import SubjectInfo from './components/subjectInfoBar';
 import InfoConsoles from './components/infoConsoles';
