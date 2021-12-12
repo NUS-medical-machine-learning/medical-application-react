@@ -26,7 +26,7 @@ const BUNDLER_PORT = "5024"; //eslint-disable-line
 const API_VERSION = "v8";
 
 // === PRODUCTION ADDRESS ===
-const ORIGIN_URL = window.location.origin;
+// const ORIGIN_URL = window.location.origin;
 // === DEVELOPMENT IPs ====
 // const ORIGIN_URL = "http://192.168.1.41"; // ftof
 // const ORIGIN_URL = "http://192.168.1.8";
@@ -36,6 +36,7 @@ const ORIGIN_URL = window.location.origin;
 // const ORIGIN_URL = "http://192.168.1.24"; //c4q-101
 // const ORIGIN_URL = "http://172.16.16.202"; // c4q-142
 // const ORIGIN_URL = "http://192.168.1.91"; // 493mini
+const ORIGIN_URL = "http://p4q-260-pc";
 
 let lastIndex = ORIGIN_URL.lastIndexOf(":");
 
