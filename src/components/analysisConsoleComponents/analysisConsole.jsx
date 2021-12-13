@@ -22,6 +22,7 @@ function AnalysisConsole() {
     process.env.REACT_APP_SKIN_IN_USE === "BREATHE" ||
     process.env.REACT_APP_SKIN_IN_USE === "BREATHE_RD"
   ) {
+    console.log("BREATHE");
   } else if (process.env.REACT_APP_SKIN_IN_USE === "MOBILE") {
     breatheSocket.disconnect();
     compoundDetectionSocket.disconnect();
