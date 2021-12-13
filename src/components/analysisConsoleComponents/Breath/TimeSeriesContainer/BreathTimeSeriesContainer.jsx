@@ -12,6 +12,8 @@ import {
   Title,
   Tooltip,
   Legend,
+  TimeScale,
+  TimeSeriesScale
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
@@ -22,7 +24,9 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  TimeScale,
+  TimeSeriesScale
 );
 
 const options = {
@@ -36,15 +40,12 @@ const options = {
     },
   },
   scales: {
-    xAxes: [
-      {
-        type: "time",
-        time: {
-          unit: "day",
-          distribution: "linear",
-        },
+    x: {
+      type: "time",
+      time: {
+        unit: "minute",
       },
-    ],
+    },
   },
 };
 
@@ -52,9 +53,11 @@ const options = {
 //         hour12: false,
 //       }));
 
-const labels = Array.from(Array(12).keys()).map(
-  (number) => new Date(Date.now() + number^2 * 60000)
-);
+// const OneToTwelve = Array.from(Array(12).keys());
+
+// const labels = Array.from(Array(12).keys()).map(
+//   (number) => new Date(Date.now() + number * number * 60000)
+// );
 
 // const labels = Array.from(Array(12).keys()).map(
 //   (number) => Date.now()
@@ -63,17 +66,17 @@ const labels = Array.from(Array(12).keys()).map(
 // const labels = Array.from(Array(10).keys());
 
 const dataset = {
-  labels,
+  labels: [],
   datasets: [
     {
       label: "Acetone",
-      data: labels.map(() => 0),
+      data: [],
       borderColor: "rgb(255, 99, 132)", //Red
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
     {
       label: "Breath Detection",
-      data: labels.map(() => 0),
+      data: [],
       borderColor: "rgb(53, 162, 235)", //Blue
       backgroundColor: "rgba(53, 162, 235, 0.5)",
     },
@@ -94,7 +97,9 @@ const removeData = (chart) => {
 };
 
 const updateData = (chart, label, data) => {
-  removeData(chart);
+  if (chart.data.labels.length > 12) {
+    removeData(chart);
+  } 
   addData(chart, label, data);
   chart.update();
 };
@@ -107,9 +112,7 @@ export default function BreathTimeSeriesContainer({ socket }) {
 
     socket.on("detection", ({ data }) => {
       const unixTimestamp = data.scores[0][0][0];
-      const date = new Date(unixTimestamp * 1000).toLocaleTimeString("en-US", {
-        hour12: false,
-      });
+      const date = new Date(unixTimestamp);
       updateData(chart, date, data.scores[0][1][0]);
     });
   }, []);
