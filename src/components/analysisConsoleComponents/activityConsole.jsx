@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class ActivityConsole extends Component {
     render() { 
         return (
-          <div className="col-lg-4 bg-light">
+          <div className="col-lg-4">
             <div className="bg-white shadow text-dark rounded p-3">
               <h1>
                 Become a <span className="text-warning"> Web Developer </span>

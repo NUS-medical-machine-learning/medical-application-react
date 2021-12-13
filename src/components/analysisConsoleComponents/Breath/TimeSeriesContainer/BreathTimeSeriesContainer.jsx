@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import "chartjs-adapter-moment";
 // import { COMPOUND_DETECTION_SERVICE_URL } from "../../../../apiCalls/common";
 // import axios from "axios";
 
@@ -34,23 +35,46 @@ const options = {
       display: true,
     },
   },
+  scales: {
+    xAxes: [
+      {
+        type: "time",
+        time: {
+          unit: "day",
+          distribution: "linear",
+        },
+      },
+    ],
+  },
 };
 
-const labels = new Array(12).fill(0);
+// const labels = new Array(12).fill(new Date(Date.now()).toLocaleTimeString("en-US", {
+//         hour12: false,
+//       }));
+
+const labels = Array.from(Array(12).keys()).map(
+  (number) => new Date(Date.now() + number^2 * 60000)
+);
+
+// const labels = Array.from(Array(12).keys()).map(
+//   (number) => Date.now()
+// );
+
+// const labels = Array.from(Array(10).keys());
 
 const dataset = {
   labels,
   datasets: [
     {
-      label: "Dataset 1",
+      label: "Acetone",
       data: labels.map(() => 0),
-      borderColor: "rgb(255, 99, 132)",
+      borderColor: "rgb(255, 99, 132)", //Red
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
     {
-      label: "Dataset 2",
+      label: "Breath Detection",
       data: labels.map(() => 0),
-      borderColor: "rgb(53, 162, 235)",
+      borderColor: "rgb(53, 162, 235)", //Blue
       backgroundColor: "rgba(53, 162, 235, 0.5)",
     },
   ],
@@ -82,11 +106,13 @@ export default function BreathTimeSeriesContainer({ socket }) {
     const chart = chartRef.current;
 
     socket.on("detection", ({ data }) => {
-      console.log(data);
-      console.log(data.scores[0][0][0]);
-      updateData(chart, data.scores[0][0][0], data.scores[0][1][0]);
+      const unixTimestamp = data.scores[0][0][0];
+      const date = new Date(unixTimestamp * 1000).toLocaleTimeString("en-US", {
+        hour12: false,
+      });
+      updateData(chart, date, data.scores[0][1][0]);
     });
-  }, []); //eslint-disable-line
+  }, []);
 
   return <Line ref={chartRef} options={options} data={dataset} />;
 }

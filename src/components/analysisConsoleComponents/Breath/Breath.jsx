@@ -18,16 +18,14 @@ export default function Breathe({ socket, compoundDetectionSocket }) {
   }, [windowWidth]);
 
   return (
-    <section
-      className="breathe-main-section"
-    >
-      <div className="breathe-time-series-wrapper">
+    <div className="col-lg-8">
+        <div className="bg-white shadow text-dark rounded p-3">
         <BreatheTimeSeriesContainer
           socket={compoundDetectionSocket}
           //height="50%"
           //height={UIState.heights.breatheHeight}
         />
       </div>
-    </section>
+    </div>
   );
 }

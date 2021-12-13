@@ -10,16 +10,9 @@ function InfoConsoles({ breatheSocket, compoundDetectionSocket }) {
     <section className="p-5">
       <div className="container p-0">
         <div className="row g-4">
-          <container
-            title={"BREATH ANALYSIS"}
-            width={"100%"}
-            name={"breathe"}
-            children={
-              <Breathe
-                socket={breatheSocket}
-                compoundDetectionSocket={compoundDetectionSocket}
-              />
-            }
+          <Breathe
+            socket={breatheSocket}
+            compoundDetectionSocket={compoundDetectionSocket}
           />
 
           <ActivityConsole />
