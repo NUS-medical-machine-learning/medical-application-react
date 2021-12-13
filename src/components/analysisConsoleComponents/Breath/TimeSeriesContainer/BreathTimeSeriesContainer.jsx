@@ -44,7 +44,7 @@ const dataset = {
   datasets: [
     {
       label: "Dataset 1",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+      data: labels.map(() => 0),
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
@@ -67,9 +67,7 @@ const resetData = () => {
     datasets: [
       {
         label: "Dataset 1",
-        data: labels.map(() =>
-          faker.datatype.number({ min: -1000, max: 1000 })
-        ),
+        data: labels.map(() => 0),
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
@@ -90,16 +88,15 @@ const addData = (chart, label, data) => {
 };
 
 const removeData = (chart) => {
-  chart.data.labels.pop();
+  chart.data.labels.shift();
   chart.data.datasets.forEach((dataset) => {
-    dataset.data.pop();
+    dataset.data.shift();
   });
-
 }
 
 const updateData = (chart, label, data) => {
-  addData(chart, label, data);
   removeData(chart);
+  addData(chart, label, data);
   chart.update();
 }
 
@@ -111,7 +108,7 @@ export default function BreathTimeSeriesContainer({ socket }) {
 
     socket.on("detection", ({ data }) => {
       console.log(data);
-      updateData(chart, "Hello", 1);
+      updateData(chart, data.score[0][1][0], data.score[0][1][0]);
     });
   }, []); //eslint-disable-line
 
