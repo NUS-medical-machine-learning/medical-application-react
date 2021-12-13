@@ -86,16 +86,34 @@ const resetData = () => {
 const addData = (chart, label, data) => {
   chart.data.labels.push(label);
   chart.data.datasets[0].data.push(data);
-  chart.update()
+  chart.data.datasets[1].data.push(0);
 };
 
+const removeData = (chart) => {
+  chart.data.labels.pop();
+  chart.data.datasets.forEach((dataset) => {
+    dataset.data.pop();
+  });
+
+}
+
+const updateData = (chart, label, data) => {
+  addData(chart, label, data);
+  removeData(chart);
+  chart.update();
+}
+
 export default function BreathTimeSeriesContainer({ socket }) {
+  const chartRef = useRef(null);
+
   useEffect(() => {
+    const chart = chartRef.current;
+
     socket.on("detection", ({ data }) => {
       console.log(data);
-      addData(this.reference.chartInstance, "Hello", 1)
+      updateData(chart, "Hello", 1);
     });
   }, []); //eslint-disable-line
 
-  return <Line options={options} data={dataset} />;
+  return <Line ref={chartRef} options={options} data={dataset} />;
 }
