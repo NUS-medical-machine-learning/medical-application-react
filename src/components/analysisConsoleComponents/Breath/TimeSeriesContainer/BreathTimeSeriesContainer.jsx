@@ -13,7 +13,6 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import faker from "faker";
 
 ChartJS.register(
   CategoryScale,
@@ -37,7 +36,7 @@ const options = {
   },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
+const labels = new Array(12).fill(0);
 
 const dataset = {
   labels,
@@ -57,30 +56,6 @@ const dataset = {
   ],
 };
 
-// export function App() {
-//   return <Line options={options} data={data} />;
-// }
-
-const resetData = () => {
-  dataset = {
-    labels,
-    datasets: [
-      {
-        label: "Dataset 1",
-        data: labels.map(() => 0),
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-      },
-      {
-        label: "Dataset 2",
-        data: labels.map(() => 0),
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-      },
-    ],
-  };
-};
-
 const addData = (chart, label, data) => {
   chart.data.labels.push(label);
   chart.data.datasets[0].data.push(data);
@@ -92,13 +67,13 @@ const removeData = (chart) => {
   chart.data.datasets.forEach((dataset) => {
     dataset.data.shift();
   });
-}
+};
 
 const updateData = (chart, label, data) => {
   removeData(chart);
   addData(chart, label, data);
   chart.update();
-}
+};
 
 export default function BreathTimeSeriesContainer({ socket }) {
   const chartRef = useRef(null);
@@ -108,7 +83,8 @@ export default function BreathTimeSeriesContainer({ socket }) {
 
     socket.on("detection", ({ data }) => {
       console.log(data);
-      updateData(chart, data.score[0][1][0], data.score[0][1][0]);
+      console.log(data.scores[0][0][0]);
+      updateData(chart, data.scores[0][0][0], data.scores[0][1][0]);
     });
   }, []); //eslint-disable-line
 
