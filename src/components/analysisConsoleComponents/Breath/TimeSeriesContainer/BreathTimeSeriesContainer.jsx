@@ -43,27 +43,11 @@ const options = {
     x: {
       type: "time",
       time: {
-        unit: "minute",
+        unit: "second",
       },
     },
   },
 };
-
-// const labels = new Array(12).fill(new Date(Date.now()).toLocaleTimeString("en-US", {
-//         hour12: false,
-//       }));
-
-// const OneToTwelve = Array.from(Array(12).keys());
-
-// const labels = Array.from(Array(12).keys()).map(
-//   (number) => new Date(Date.now() + number * number * 60000)
-// );
-
-// const labels = Array.from(Array(12).keys()).map(
-//   (number) => Date.now()
-// );
-
-// const labels = Array.from(Array(10).keys());
 
 const dataset = {
   labels: [],
@@ -112,7 +96,7 @@ export default function BreathTimeSeriesContainer({ socket }) {
 
     socket.on("detection", ({ data }) => {
       const unixTimestamp = data.scores[0][0][0];
-      const date = new Date(unixTimestamp);
+      const date = new Date(unixTimestamp * 1000);
       updateData(chart, date, data.scores[0][1][0]);
     });
   }, []);
