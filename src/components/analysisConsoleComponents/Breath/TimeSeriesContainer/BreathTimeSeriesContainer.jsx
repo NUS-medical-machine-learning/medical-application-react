@@ -81,7 +81,7 @@ const removeData = (chart) => {
 };
 
 const updateData = (chart, label, data) => {
-  if (chart.data.labels.length > 12) {
+  if (chart.data.labels.length > 30) { // Render 30 seconds
     removeData(chart);
   } 
   addData(chart, label, data);
