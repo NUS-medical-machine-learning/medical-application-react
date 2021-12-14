@@ -46,6 +46,13 @@
           //console.log(nextCode,String.fromCharCode(nextCode))
           nextTime = new Date().getTime();
 
+          var input = $(".input-group").children(2)[1];
+          var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+            window.HTMLInputElement.prototype,
+            "value"
+          ).set;
+
+          var ev2 = new Event("input", { bubbles: true });
           // The next input is delayed by two seconds, then the previous data is deleted and recalculated
           this.nextCode = nextCode;
           this.lastTime = nextTime;
@@ -53,7 +60,9 @@
           if (e.which == 13) {
             //console.log(code)
             if (code.length >= 5) {
-              $(".input-group").children(2)[1].value = code;
+              // $(".input-group").children(2)[1].value = code;
+              nativeInputValueSetter.call(input, code);
+              input.dispatchEvent(ev2);
             }
             this.code = "";
           } else if (nextCode != 16) {
