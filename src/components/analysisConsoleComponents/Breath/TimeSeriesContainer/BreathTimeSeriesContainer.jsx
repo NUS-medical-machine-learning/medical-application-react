@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import "chartjs-adapter-moment";
 // import { COMPOUND_DETECTION_SERVICE_URL } from "../../../../apiCalls/common";
 // import axios from "axios";

@@ -2,35 +2,15 @@ import React, { Component } from "react";
 import ControlButtons from "./controlButtons";
 
 class SubjectInfo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { value: "" };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
-    this.setState({ value: event.target.value });
-  }
-
-  handleSubmit(event) {
-    alert("A name was submitted: " + this.state.value);
-    event.preventDefault();
-  }
 
   render() {
-    const handleKeyDown = (event) => {
-      if (event.key === "Enter") {
-        alert("A name was entered: " + this.state.value);
-        event.preventDefault();
-      }
-    };
-
     return (
       <section className="p-5">
         <div className="container bg-white shadow p-3 rounded">
-          <ControlButtons />
+          <ControlButtons
+            onAddActivity={this.props.onAddActivity}
+            subjectInfo={this.props.subjectInfo}
+          />
 
           <div className="row mt-3">
             <div className="input-group mb-2">
@@ -40,8 +20,8 @@ class SubjectInfo extends Component {
                 className="form-control"
                 placeholder="Enter Test ID to begin sampling"
                 type="text"
-                onKeyDown={handleKeyDown}
-                onChange={this.handleChange}
+                onKeyDown={this.props.handleKeyDown}
+                onChange={this.props.onChange}
               />
             </div>
           </div>
