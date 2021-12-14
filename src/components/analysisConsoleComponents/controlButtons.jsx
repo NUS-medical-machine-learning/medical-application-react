@@ -61,7 +61,9 @@ const postStartStopBreathe = (action) => {
       "Access-Control-Allow-Origin": "*"
     },
     body: JSON.stringify({ action }),
-  }).then((res) => res.json());
+  }).then((res) => {
+    console.log(res);
+    return res.json()});
 };
 
 const handleBreatheStart = () => {
