@@ -29,7 +29,7 @@ function AnalysisConsole() {
       compoundDetectionSocket.disconnect();
     }
 
-  const [value, setCount] = useState("");
+  const [value, setValue] = useState(" ");
   const [activities, setActivities] = useState([
         { subjectID: "BTX-DEV-DEMO-000000006", event: Status.Started },
         { subjectID: "BTX-DEV-DEMO-000000006", event: Status.Stopped },
@@ -39,15 +39,15 @@ function AnalysisConsole() {
       ])
 
   const handleChange = (event) => {
-    setCount(event.target.value);
+    setValue(event.target.value);
   }
 
-  const handleAddActivity = ({ s, e }) => {
+  const handleAddActivity = (s, e) => {
     const newActivity = { subjectID: s, event: e };
-    console.log(newActivity);
-    console.log(activities[1]);
-    activities.push(newActivity);
-    setActivities(activities);
+    const newActivities = activities.slice();
+    console.log(newActivity.event);
+    newActivities.push(newActivity);
+    setActivities(newActivities);
   };
 
   const handleKeyDown = (event) => {
@@ -56,25 +56,29 @@ function AnalysisConsole() {
       event.preventDefault();
     }
   };
+
+  const getSubjectInfo = () => {
+    return "BTX-DEV-" + value;
+  }
     
   return (
-      <div>
-        <NavBar />
+    <div>
+      <NavBar />
 
-        <SubjectInfo
-          subjectInfo={value}
-          onKeyDown={handleKeyDown}
-          onAddActivity={handleAddActivity}
-          onChange={handleChange}
-        />
+      <SubjectInfo
+        subjectInfo={getSubjectInfo}
+        onKeyDown={handleKeyDown}
+        onAddActivity={handleAddActivity}
+        onChange={handleChange}
+      />
 
-        <InfoConsoles
-          activities={activities}
-          breatheSocket={breatheSocket}
-          compoundDetectionSocket={compoundDetectionSocket}
-        />
-      </div>
-    );
+      <InfoConsoles
+        activities={activities}
+        breatheSocket={breatheSocket}
+        compoundDetectionSocket={compoundDetectionSocket}
+      />
+    </div>
+  );
 }
 
 export default AnalysisConsole;

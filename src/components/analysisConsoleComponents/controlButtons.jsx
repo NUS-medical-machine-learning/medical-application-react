@@ -43,7 +43,7 @@ class ControlButtons extends Component {
 
   handleBreatheStart = () => {
     //   breathDispatch({ eventStatus: "Start isLoading" });
-    this.props.onAddActivity({subjectID: this.props.subjectInfo, event: Status.Started});
+    console.log("Start Button Clicked")
     this.postValveIsRegulated(true)
       .then((data) => {
         if (data.status === "fail") {
@@ -57,6 +57,7 @@ class ControlButtons extends Component {
         if (data.status === "fail") {
           return console.log(data.message);
         }
+        this.props.onAddActivity(this.props.subjectInfo(), Status.Started);
         //   breathDispatch({ eventStatus: "true: waitingForKey" });
       })
       .catch((err) => console.log(err));
@@ -80,9 +81,7 @@ class ControlButtons extends Component {
         if (data.status === "fail") {
           return console.log(data.message);
         }
-        console.log(data);
-        if (data.status === 200) {
-        }
+        this.props.onAddActivity(this.props.subjectInfo(), Status.Stopped);
         //   breathDispatch({ eventStatus: "false: waitingForKey" });
       })
       .catch((err) => console.log(err.message));
