@@ -29,6 +29,60 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+    
+      setTimeout((e) => {
+        $(".input-group").children(2)[1].disabled=true
+        document.onkeydown = (e)=> {
+    let nextCode,nextTime = '';
+    let lastTime = this.lastTime;
+    let code = this.code;
+    if (window.event) {
+    nextCode = e.keyCode
+    } else if (e.which) {
+    nextCode = e.which
+    }
+//console.log(nextCode,String.fromCharCode(nextCode))
+    nextTime = new Date().getTime()
+
+    // The next input is delayed by two seconds, then the previous data is deleted and recalculated 
+    this.nextCode = nextCode;
+    this.lastTime = nextTime;
+    // Enter
+    if(e.which == 13) {
+        //console.log(code)
+        if (code.length >= 5) {
+            $(".input-group").children(2)[1].value=code
+        }
+        this.code = ''
+    } else if (nextCode !=16) {
+        c = String.fromCharCode(nextCode)
+        if (c == "Y"){
+            c = "Z"
+        } else if (c == "Z"){
+            c="Y"
+        } else if (c == "y") {
+            c ="z"
+        } else if (c=="z") {
+            c ="y"    
+        }
+        if(nextTime && lastTime && nextTime-lastTime<1000){
+        code += c
+        }else{
+        code = c
+        }
+        this.code = code;
+    }
+    }
+
+
+
+
+      },2000);
+      
+    
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

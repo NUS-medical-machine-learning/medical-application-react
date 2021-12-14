@@ -4,6 +4,7 @@ import { Status } from "./activityReport";
 
 class ActivityReports extends Component {
   render() {
+    console.log(this.props.activities);
     return (
       <div className="col-lg-4">
         <div className="bg-white shadow text-dark rounded p-3">

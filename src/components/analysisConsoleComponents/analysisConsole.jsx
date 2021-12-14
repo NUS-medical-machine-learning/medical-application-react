@@ -42,9 +42,12 @@ function AnalysisConsole() {
     setCount(event.target.value);
   }
 
-  const handleAddActivity = ({ subjectID, event }) => {
-    const newActivities = activities.push({ subjectID, event });
-    setActivities(newActivities);
+  const handleAddActivity = ({ s, e }) => {
+    const newActivity = { subjectID: s, event: e };
+    console.log(newActivity);
+    console.log(activities[1]);
+    activities.push(newActivity);
+    setActivities(activities);
   };
 
   const handleKeyDown = (event) => {

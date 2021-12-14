@@ -43,7 +43,7 @@ class ControlButtons extends Component {
 
   handleBreatheStart = () => {
     //   breathDispatch({ eventStatus: "Start isLoading" });
-    this.props.onAddActivity(this.props.subjectInfo, Status.Started);
+    this.props.onAddActivity({subjectID: this.props.subjectInfo, event: Status.Started});
     this.postValveIsRegulated(true)
       .then((data) => {
         if (data.status === "fail") {
