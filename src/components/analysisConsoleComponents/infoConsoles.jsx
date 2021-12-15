@@ -1,21 +1,24 @@
-import React, { Component } from "react";
-import ActivityConsole from "./activityConsole";
-import Graph from "./graph";
+import React from "react";
+import ActivityReports from "./Activities/activityReports";
+import Breathe from "./Breath/Breath";
 
-class InfoConsoles extends Component {
-  render() {
+class InfoConsoles extends React.Component {
+  render() { 
     return (
       <section className="p-5">
         <div className="container p-0">
           <div className="row g-4">
-            <Graph />
-            
-            <ActivityConsole />
+            <Breathe
+              socket={this.props.breatheSocket}
+              compoundDetectionSocket={this.props.compoundDetectionSocket}
+            />
+
+            <ActivityReports activities={this.props.activities} />
           </div>
         </div>
       </section>
     );
   }
 }
-
+ 
 export default InfoConsoles;
