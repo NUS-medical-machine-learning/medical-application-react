@@ -90,8 +90,8 @@ class ControlButtons extends Component {
   render() {
     return (
       <div className="row">
-        <div className="col">
-          <h3 className="mb-3 mb-md-0">Subject Info</h3>
+        <div className="col-2">
+          <h3 >Subject Info</h3>
         </div>
         <div className="col">
           <button

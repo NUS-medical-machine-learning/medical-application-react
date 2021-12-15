@@ -4,6 +4,7 @@ import App from './App';
 import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap/dist/js/bootstrap.bundle"
 import "bootstrap-icons/font/bootstrap-icons.css";
+import "./singin.css";
 
 ReactDOM.render(
   <React.StrictMode>

@@ -4,6 +4,7 @@ import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { Navigate } from "react-router-dom";
+import nusLogo from "../resources/images/logoNUS.png";
 
 // Configure Firebase.
 const firebaseConfig = {
@@ -43,28 +44,28 @@ function SignInScreen() {
 
   if (!isSignedIn) {
     return (
-      <div>
-        <h1>My App</h1>
-        <p>Please sign-in:</p>
+      <main class="form-signin">
+        <img
+          src={nusLogo}
+          class="mb-5"
+          width="219"
+          height="auto"
+          alt="NUS Logo"
+        />
+
         <StyledFirebaseAuth
+          class="rounded"
           uiCallback={(ui) => ui.disableAutoSignIn()}
           uiConfig={uiConfig}
           firebaseAuth={firebase.auth()}
         />
-      </div>
+        <p class="mt-5 mb-3 text-muted">© 2021-2022</p>
+      </main>
     );
   }
   
   return (
     <Navigate to="/" />
-    // <div>
-    //   <h1>My App</h1>
-    //   <p>
-    //     Welcome {firebase.auth().currentUser.displayName}! You are now
-    //     signed-in!
-    //   </p>
-    //   <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
-    // </div>
   );
 }
 
