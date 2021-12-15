@@ -1,7 +1,5 @@
 import React, { useRef, useEffect } from "react";
 import "chartjs-adapter-moment";
-// import { COMPOUND_DETECTION_SERVICE_URL } from "../../../../apiCalls/common";
-// import axios from "axios";
 
 import {
   Chart as ChartJS,
@@ -99,7 +97,7 @@ export default function BreathTimeSeriesContainer({ socket }) {
       const date = new Date(unixTimestamp * 1000);
       updateData(chart, date, data.scores[0][1][0]);
     });
-  }, []);
+  }, [socket]);
 
   return <Line ref={chartRef} options={options} data={dataset} />;
 }

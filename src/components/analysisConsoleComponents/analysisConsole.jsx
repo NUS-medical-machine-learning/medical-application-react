@@ -9,6 +9,8 @@ import {
 } from "../../apiCalls/common";
 import { Status } from "./Activities/activityReport";
 
+const MAX_LENGTH_OF_ACTIVITIES_ARRAY = 4;
+
 function AnalysisConsole() {
   const [breatheSocket] = useSocket(BREATH_INLET_ROOT_URL);
     const [compoundDetectionSocket] = useSocket(COMPOUND_DETECTION_ROOT_URL);
@@ -45,8 +47,10 @@ function AnalysisConsole() {
   const handleAddActivity = (s, e) => {
     const newActivity = { subjectID: s, event: e };
     const newActivities = activities.slice();
-    console.log(newActivity.event);
     newActivities.push(newActivity);
+    if (newActivities.length > MAX_LENGTH_OF_ACTIVITIES_ARRAY) {
+      newActivities.shift();
+    }
     setActivities(newActivities);
   };
 
@@ -82,77 +86,3 @@ function AnalysisConsole() {
 }
 
 export default AnalysisConsole;
-
-// class AnalysisConsole extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       value: "",
-//       activities: [
-//         { subjectID: "BTX-DEV-DEMO-000000006", event: Status.Started },
-//         { subjectID: "BTX-DEV-DEMO-000000006", event: Status.Stopped },
-//         { subjectID: "BTX-DEV-DEMO-000000006", event: Status.Sending },
-//         { subjectID: "BTX-DEV-DEMO-000000006", event: Status.Negative },
-//         { subjectID: "BTX-DEV-DEMO-000000006", event: Status.Positive },
-//       ],
-//     };
-
-//     this.handleChange = this.handleChange.bind(this);
-//   }
-
-//   handleChange = (event) => {
-//     this.setState({ value: event.target.value });
-//   }
-
-//   handleAddActivity = ({ subjectID, event }) => {
-//     const activities = this.state.activities.push({ subjectID, event });
-//     this.setState({ activities });
-//   };
-
-//   handleKeyDown = (event) => {
-//       if (event.key === "Enter") {
-//         alert("A name was entered: " + this.props.value);
-//         event.preventDefault();
-//       }
-//     };
-
-//   render() {
-//     const [breatheSocket] = useSocket(BREATH_INLET_ROOT_URL);
-//     const [compoundDetectionSocket] = useSocket(COMPOUND_DETECTION_ROOT_URL);
-
-//     if (process.env.REACT_APP_SKIN_IN_USE === "TRACK") {
-//       breatheSocket.disconnect();
-//       compoundDetectionSocket.disconnect();
-//     } else if (process.env.REACT_APP_SKIN_IN_USE === "EXPLORE") {
-//       breatheSocket.disconnect();
-//       compoundDetectionSocket.disconnect();
-//     } else if (
-//       process.env.REACT_APP_SKIN_IN_USE === "BREATHE" ||
-//       process.env.REACT_APP_SKIN_IN_USE === "BREATHE_RD"
-//     ) {
-//       console.log("BREATHE");
-//     } else if (process.env.REACT_APP_SKIN_IN_USE === "MOBILE") {
-//       breatheSocket.disconnect();
-//       compoundDetectionSocket.disconnect();
-//     }
-//     return (
-//       <div>
-//         <NavBar />
-
-//         <SubjectInfo
-//           subjectInfo={this.state.value}
-//           onKeyDown={this.handleKeyDown}
-//           onAddActivity={this.handleAddActivity}
-//           onChange={this.handleChange}
-//         />
-
-//         <InfoConsoles
-//           breatheSocket={breatheSocket}
-//           compoundDetectionSocket={compoundDetectionSocket}
-//         />
-//       </div>
-//     );
-//   }
-// }
-
-// export default AnalysisConsole;
