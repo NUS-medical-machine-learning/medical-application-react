@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import "chartjs-adapter-moment";
 
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -28,6 +29,7 @@ ChartJS.register(
 );
 
 const options = {
+  spanGaps: 1000 * 20,
   responsive: true,
   plugins: {
     legend: {
@@ -46,6 +48,8 @@ const options = {
     },
   },
 };
+
+
 
 const dataset = {
   labels: [],
