@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import "chartjs-adapter-moment";
 
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -43,9 +44,26 @@ const options = {
       time: {
         unit: "second",
       },
+      title: {
+        display: true,
+        text: 'Date'
+      },
+      ticks: {
+        autoSkip: false,
+        maxRotation: 0,
+        major: {
+          enabled: true
+        },
+      }
     },
+    y: {
+      // the data maximum used for determining the ticks is Math.max(dataMax, suggestedMax)
+      suggestedMax: 30,
+    }
   },
 };
+
+
 
 const dataset = {
   labels: [],
@@ -79,7 +97,7 @@ const removeData = (chart) => {
 };
 
 const updateData = (chart, label, data) => {
-  if (chart.data.labels.length > 30) { // Render 30 seconds
+  if (chart.data.labels.length > 20) { // Render about 10 seconds
     removeData(chart);
   } 
   addData(chart, label, data);
