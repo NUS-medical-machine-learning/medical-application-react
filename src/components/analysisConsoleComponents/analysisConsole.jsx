@@ -66,7 +66,7 @@ function AnalysisConsole() {
   }
     
   return (
-    <div>
+    <body className="">
       <NavBar />
 
       <SubjectInfo
@@ -81,7 +81,7 @@ function AnalysisConsole() {
         breatheSocket={breatheSocket}
         compoundDetectionSocket={compoundDetectionSocket}
       />
-    </div>
+    </body>
   );
 }
 

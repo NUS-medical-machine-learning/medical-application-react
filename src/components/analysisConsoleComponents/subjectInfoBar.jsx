@@ -5,8 +5,8 @@ class SubjectInfo extends Component {
 
   render() {
     return (
-      <section className="p-5">
-        <div className="container bg-white shadow p-3 rounded">
+      <section className="">
+        <div className="container shadow p-3 rounded">
           <ControlButtons
             onAddActivity={this.props.onAddActivity}
             subjectInfo={this.props.subjectInfo}
