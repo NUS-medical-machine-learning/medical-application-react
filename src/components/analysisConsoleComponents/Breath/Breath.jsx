@@ -17,12 +17,8 @@ export default function Breathe({ socket, compoundDetectionSocket }) {
   }, [windowWidth]);
 
   return (
-    <div className="col-lg-8">
-        <div className="bg-white shadow text-dark rounded p-3">
-        <BreatheTimeSeriesContainer
-          socket={compoundDetectionSocket}
-        />
-      </div>
-    </div>
+    
+      <BreatheTimeSeriesContainer socket={compoundDetectionSocket} />
+    
   );
 }

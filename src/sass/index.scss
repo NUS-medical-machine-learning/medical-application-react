@@ -2,6 +2,7 @@
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/mixins";
 
+$body-bg: $light;
 
 .dark {
 
@@ -33,7 +34,7 @@
     }
 
     $body-color: #eeeeee;
-    $body-bg: #263C5C;
+    $body-bg: $dark;
     
     --#{$variable-prefix}body-color: #{$body-color};
     --#{$variable-prefix}body-bg: #{$body-bg};
@@ -41,7 +42,7 @@
     @import "../../node_modules/bootstrap/scss/bootstrap";
 }
 
-// @import "../../node_modules/bootstrap/scss/bootstrap";
+@import "../../node_modules/bootstrap/scss/bootstrap";
 
 
 

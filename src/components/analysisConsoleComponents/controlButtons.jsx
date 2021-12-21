@@ -5,6 +5,8 @@ import {
 } from "../../apiCalls/common";
 import { Status } from "./Activities/activityReport";
 
+import { ToastStart, ToastStop } from "./toasts";
+
 class ControlButtons extends Component {
   postCancelSample = () => {
     return fetch(`${COMPOUND_DETECTION_SERVICE_URL}/events`, {
@@ -43,7 +45,8 @@ class ControlButtons extends Component {
 
   handleBreatheStart = () => {
     //   breathDispatch({ eventStatus: "Start isLoading" });
-    console.log("Start Button Clicked")
+    console.log("Start Button Clicked");
+    const id = ToastStart.loading();
     this.postValveIsRegulated(true)
       .then((data) => {
         if (data.status === "fail") {
@@ -59,13 +62,20 @@ class ControlButtons extends Component {
         }
         this.props.onAddActivity(this.props.subjectInfo(), Status.Started);
         //   breathDispatch({ eventStatus: "true: waitingForKey" });
+
+        ToastStart.success(id);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setTimeout(() => {
+          ToastStart.error(id);
+        }, 2000);
+      });
   };
 
   handleBreatheStop = () => {
     //   breathDispatch({ eventStatus: "Stop isLoading" });
-
+    const id = ToastStop.loading();
     this.postValveIsRegulated(false)
       .then((data) => {
         if (data.status === "fail") {
@@ -83,30 +93,29 @@ class ControlButtons extends Component {
         }
         this.props.onAddActivity(this.props.subjectInfo(), Status.Stopped);
         //   breathDispatch({ eventStatus: "false: waitingForKey" });
+        ToastStop.success(id);
       })
-      .catch((err) => console.log(err.message));
+      .catch((err) => {
+        console.log(err.message);
+        ToastStop.error(id);
+      });
   };
 
   render() {
     return (
-      <div className="row">
-        <div className="col-2">
-          <h3 >Subject Info</h3>
-        </div>
-        <div className="col">
-          <button
-            onClick={this.handleBreatheStop}
-            className="btn btn-secondary btn-lg float-end ms-3"
-          >
-            Stop
-          </button>
-          <button
-            onClick={this.handleBreatheStart}
-            className="btn btn-primary btn-lg float-end"
-          >
-            Start
-          </button>
-        </div>
+      <div>
+        <button
+          onClick={this.handleBreatheStop}
+          className="btn btn-secondary btn-lg float-end ms-3"
+        >
+          Stop
+        </button>
+        <button
+          onClick={this.handleBreatheStart}
+          className="btn btn-primary btn-lg float-end"
+        >
+          Start
+        </button>
       </div>
     );
   }
