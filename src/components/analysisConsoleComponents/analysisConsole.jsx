@@ -5,17 +5,13 @@ import {
   BREATH_INLET_ROOT_URL,
   COMPOUND_DETECTION_ROOT_URL,
 } from "../../apiCalls/common";
-import { Status } from "./Activities/activityReport";
 import ControlButtons from "./controlButtons";
 import SubjectIdInput from "./sujectIdInput";
-import ActivityReports from "./Activities/activityReports";
 import Breathe from "./Breath/Breath";
 import firebase from "firebase/compat/app";
 
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { Slide } from "react-toastify";
-
-const MAX_LENGTH_OF_ACTIVITIES_ARRAY = 4;
 
 function AnalysisConsole() {
   const [breatheSocket] = useSocket(BREATH_INLET_ROOT_URL);
@@ -37,27 +33,15 @@ function AnalysisConsole() {
     compoundDetectionSocket.disconnect();
   }
 
+  const [darkMode, setDarkMode] = useState(false);
   const [subjectId, setSubjectId] = useState(" ");
-  const [activities, setActivities] = useState([
-    { subjectID: "BTX-DEV-DEMO-000000006", event: Status.Started },
-    { subjectID: "BTX-DEV-DEMO-000000006", event: Status.Stopped },
-    { subjectID: "BTX-DEV-DEMO-000000006", event: Status.Sending },
-    { subjectID: "BTX-DEV-DEMO-000000006", event: Status.Negative },
-    { subjectID: "BTX-DEV-DEMO-000000006", event: Status.Positive },
-  ]);
+
+  const toggleDarkMode = () => {
+    darkMode ? setDarkMode(false) : setDarkMode(true);
+  }
 
   const handleChange = (event) => {
     setSubjectId(event.target.value);
-  };
-
-  const handleAddActivity = (s, e) => {
-    const newActivity = { subjectID: s, event: e };
-    const newActivities = activities.slice();
-    newActivities.push(newActivity);
-    if (newActivities.length > MAX_LENGTH_OF_ACTIVITIES_ARRAY) {
-      newActivities.shift();
-    }
-    setActivities(newActivities);
   };
 
   const handleKeyDown = (event) => {
@@ -70,20 +54,16 @@ function AnalysisConsole() {
     return "BTX-DEV-" + subjectId;
   };
 
-  const notify = () =>
-    toast.error(
-      <div>
-        <div class="toast-header">
-          <strong class="me-auto">Sampling started</strong>
-          <small>{new Date().toLocaleTimeString()}</small>
-        </div>
-      </div>
-    );
+  let isDarkMode = darkMode ? "dark" : "";
 
   return (
-    <body className="">
-      <div>
-        <button onClick={notify}>Notify !</button>
+    <body id="my-div" className={isDarkMode}>
+      <svg xmlns="http://www.w3.org/2000/svg" style={{ display: "none" }}>
+        <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+        </symbol>
+      </svg>
+      <div className="">
         <ToastContainer
           position="bottom-right"
           autoClose={5000}
@@ -98,19 +78,19 @@ function AnalysisConsole() {
         />
       </div>
       <section className="">
-        <NavBar />
+        <NavBar darkMode={darkMode} setDarkMode={(bool) => setDarkMode(bool)} />
       </section>
 
       <section className="">
         <div class="container p-5">
-          <div class="card shadow rounded border border-3">
-            <div class="card-header p-3">
+          <div class="card shadow rounded">
+            <div class="card-header p-3 bg-supporting">
               Operator Workstation for{" "}
               <span class="fw-bold text-uppercase">
                 {firebase.auth().currentUser.email}
               </span>
             </div>
-            <div class="card-body">
+            <div class="card-body bg-tertiary">
               <Breathe
                 socket={breatheSocket}
                 compoundDetectionSocket={compoundDetectionSocket}
@@ -124,32 +104,32 @@ function AnalysisConsole() {
         <div className="container p-5">
           <div className="">
             <div className="row">
-              <div className="col-7">
-                <div className="shadow rounded p-3 border border-3">
-                  <ActivityReports activities={activities} />
+              <div className="col-9">
+                <div className="shadow rounded">
+                  <div class="card shadow rounded">
+                    <div class="card-header px-3 py-2 bg-supporting">
+                      <svg
+                        className="bi flex-shrink-0 me-2"
+                        width={24}
+                        height={24}
+                        role="img"
+                        aria-label="Success:"
+                      >
+                        <use xlinkHref="#info-fill" />
+                      </svg>
+                      <span class="align-middle">SUBJECT INFO</span>
+                    </div>
+                    <div class="card-body bg-tertiary">
+                      <SubjectIdInput
+                        onKeyDown={handleKeyDown}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="col-5">
-                <div className="shadow rounded p-3 border border-3">
-                  <div className="">
-                    <h5>Subject Info</h5>
-                  </div>
-
-                  <div className="mt-3">
-                    <SubjectIdInput
-                      onKeyDown={handleKeyDown}
-                      onChange={handleChange}
-                    />
-                    <ControlButtons
-                      onAddActivity={handleAddActivity}
-                      subjectInfo={getSubjectInfo}
-                    />
-                  </div>
-
-                  <div className="mt-3">
-                    <button className="btn btn-primary">Refresh User</button>
-                  </div>
-                </div>
+              <div className="col-3">
+                <ControlButtons subjectInfo={getSubjectInfo} />
               </div>
             </div>
           </div>

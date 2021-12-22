@@ -1,48 +1,117 @@
 @import "../../node_modules/bootstrap/scss/functions";
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/utilities";
+@import "../../node_modules/bootstrap/scss/buttons";
+
+#my-div {
+  height: 100vh; /* vh stands for view-port height, 1vh is 1% of screen height */
+}
 
 $body-bg: $light;
 
+$tertiary: $light;
+$supporting: rgb(13, 202, 240);
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $light,
+  "success": $success,
+  "danger": $danger,
+  "info": $supporting,
+  "dark": $dark,
+  "light": $light,
+  "tertiary": $tertiary,
+  "supporting": $supporting,
+);
+
+$utilities: map-merge(
+  $utilities,
+  (
+    "color":
+      map-merge(
+        map-get($utilities, "color"),
+        (
+          values:
+            map-merge(
+              map-get(map-get($utilities, "color"), "values"),
+              ($theme-colors)
+            ),
+        )
+      ),
+  )
+);
+
+.bg-supporting {
+  background-color: $supporting !important;
+  color: $light;
+}
+
+.bg-tertiary {
+  background-color: $tertiary !important;
+  color: $dark;
+}
+
+.bg-inputGroup {
+  background-color: $light !important;
+  color: $dark;
+}
+
 .dark {
+  /* redefine theme colors for dark theme */
+  $dark: $gray-900;
+  $tertiary: $gray-800;
 
-    /* redefine theme colors for dark theme */
-    $primary: #012345;
-    $secondary: #111111;
-    $success: #222222;
-    $dark: #000;
-    
-    $theme-colors: (
-        "primary": $primary,
-        "secondary": $secondary,
-        "success": $success,
-        "danger": $danger,
-        "info": $indigo,
-        "dark": $dark,
-        "light": $light,
-    );
+  $theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "danger": $danger,
+    "info": $supporting,
+    "dark": $dark,
+    "light": $light,
+    "tertiary": $tertiary,
+  );
 
-    /* redefine theme color variables */
-    @each $color, $value in $theme-colors {
-        --#{$variable-prefix}#{$color}: #{$value};
+  /* redefine theme color variables */
+  @each $color, $value in $theme-colors {
+    --#{$variable-prefix}#{$color}: #{$value};
+  }
+
+  /* redefine theme color rgb vars (used for bg- colors) */
+  $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+  @each $color, $value in $theme-colors-rgb {
+    --#{$variable-prefix}#{$color}-rgb: #{$value};
+  }
+
+  $body-color: $light;
+  $body-bg: $dark;
+
+  --#{$variable-prefix}body-color: #{$body-color};
+  --#{$variable-prefix}body-bg: #{$body-bg};
+
+  .bg-tertiary {
+    --bs-bg-opacity: 1;
+    background-color: rgba(
+      var(--bs-tertiary-rgb),
+      var(--bs-bg-opacity)
+    ) !important;
+    .bg-tertiary {
+      color: $light;
     }
+  }
 
-    /* redefine theme color rgb vars (used for bg- colors) */
-    $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
-    @each $color, $value in $theme-colors-rgb {
-        --#{$variable-prefix}#{$color}-rgb: #{$value};
-    }
+  .bg-supporting {
+    background-color: $supporting !important;
+    color: $dark;
+  }
 
-    $body-color: #eeeeee;
-    $body-bg: $dark;
-    
-    --#{$variable-prefix}body-color: #{$body-color};
-    --#{$variable-prefix}body-bg: #{$body-bg};
-      
-    @import "../../node_modules/bootstrap/scss/bootstrap";
+  .bg-inputGroup {
+    background-color: $dark !important;
+    color: $white;
+  }
+
+  @import "../../node_modules/bootstrap/scss/bootstrap";
 }
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
-
-
-

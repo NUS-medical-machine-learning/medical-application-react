@@ -3,7 +3,6 @@ import {
   BREATH_INLET_SERVICE_URL,
   COMPOUND_DETECTION_SERVICE_URL,
 } from "../../apiCalls/common";
-import { Status } from "./Activities/activityReport";
 
 import { ToastStart, ToastStop } from "./toasts";
 
@@ -60,9 +59,7 @@ class ControlButtons extends Component {
         if (data.status === "fail") {
           return console.log(data.message);
         }
-        this.props.onAddActivity(this.props.subjectInfo(), Status.Started);
         //   breathDispatch({ eventStatus: "true: waitingForKey" });
-
         ToastStart.success(id);
       })
       .catch((err) => {
@@ -91,7 +88,6 @@ class ControlButtons extends Component {
         if (data.status === "fail") {
           return console.log(data.message);
         }
-        this.props.onAddActivity(this.props.subjectInfo(), Status.Stopped);
         //   breathDispatch({ eventStatus: "false: waitingForKey" });
         ToastStop.success(id);
       })
@@ -103,18 +99,24 @@ class ControlButtons extends Component {
 
   render() {
     return (
-      <div>
+      <div className="d-grid gap-2">
+        <button
+          onClick={this.handleBreatheStart}
+          className="btn btn-outline-success btn-lg shadow"
+        >
+          Start
+        </button>
         <button
           onClick={this.handleBreatheStop}
-          className="btn btn-secondary btn-lg float-end ms-3"
+          className="btn btn-outline-danger btn-lg shadow"
         >
           Stop
         </button>
         <button
-          onClick={this.handleBreatheStart}
-          className="btn btn-primary btn-lg float-end"
+          onClick={this.props.onToggleDarkMode}
+          className="btn btn-outline-info btn-lg shadow"
         >
-          Start
+          Refresh User
         </button>
       </div>
     );
