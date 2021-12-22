@@ -93,16 +93,11 @@ const options = {
 
 
 const dataset = {
-  labels: [
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-  ],
+  labels: [],
   datasets: [
     {
       label: "Acetone",
-      data: [
-        1, 2, 4, -1, 20, 30, 50, 80, 100, 130, 145, 130, 110, 60, 40, 20, 1, 3,
-        1,
-      ],
+      data: [],
       borderColor: blueColor, //Blue
       backgroundColor: blueColorLighter,
       tension: 0.4,

@@ -32,6 +32,7 @@ export const ToastStop = {
       render: toastBootstrap("Sampling stopped👌"),
       type: "info",
       isLoading: false,
+      ...toastConfig,
     });
   },
   error: function (id) {
@@ -39,6 +40,7 @@ export const ToastStop = {
       render: toastBootstrap("Fail to stop 🤯"),
       type: "error",
       isLoading: false,
+      ...toastConfig,
     });
   },
 };
