@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Pneunostics from "../../resources/images/Pneunostic-Logo.svg";
 import ToggleButton from "react-bootstrap/ToggleButton";

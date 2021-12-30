@@ -17,28 +17,10 @@ function AnalysisConsole() {
   const [breatheSocket] = useSocket(BREATH_INLET_ROOT_URL);
   const [compoundDetectionSocket] = useSocket(COMPOUND_DETECTION_ROOT_URL);
 
-  if (process.env.REACT_APP_SKIN_IN_USE === "TRACK") {
-    breatheSocket.disconnect();
-    compoundDetectionSocket.disconnect();
-  } else if (process.env.REACT_APP_SKIN_IN_USE === "EXPLORE") {
-    breatheSocket.disconnect();
-    compoundDetectionSocket.disconnect();
-  } else if (
-    process.env.REACT_APP_SKIN_IN_USE === "BREATHE" ||
-    process.env.REACT_APP_SKIN_IN_USE === "BREATHE_RD"
-  ) {
-    console.log("BREATHE");
-  } else if (process.env.REACT_APP_SKIN_IN_USE === "MOBILE") {
-    breatheSocket.disconnect();
-    compoundDetectionSocket.disconnect();
-  }
+  initialize(breatheSocket, compoundDetectionSocket);
 
   const [darkMode, setDarkMode] = useState(false);
   const [subjectId, setSubjectId] = useState(" ");
-
-  const toggleDarkMode = () => {
-    darkMode ? setDarkMode(false) : setDarkMode(true);
-  }
 
   const handleChange = (event) => {
     setSubjectId(event.target.value);
@@ -137,6 +119,24 @@ function AnalysisConsole() {
       </section>
     </body>
   );
+}
+
+function initialize(breatheSocket, compoundDetectionSocket) {
+  if (process.env.REACT_APP_SKIN_IN_USE === "TRACK") {
+    breatheSocket.disconnect();
+    compoundDetectionSocket.disconnect();
+  } else if (process.env.REACT_APP_SKIN_IN_USE === "EXPLORE") {
+    breatheSocket.disconnect();
+    compoundDetectionSocket.disconnect();
+  } else if (
+    process.env.REACT_APP_SKIN_IN_USE === "BREATHE" ||
+    process.env.REACT_APP_SKIN_IN_USE === "BREATHE_RD"
+  ) {
+    console.log("BREATHE");
+  } else if (process.env.REACT_APP_SKIN_IN_USE === "MOBILE") {
+    breatheSocket.disconnect();
+    compoundDetectionSocket.disconnect();
+  }
 }
 
 export default AnalysisConsole;

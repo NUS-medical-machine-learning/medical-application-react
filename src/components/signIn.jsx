@@ -4,7 +4,9 @@ import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { Navigate } from "react-router-dom";
-import nusLogo from "../resources/images/logoNUS.png";
+
+import Pneunostics from "../resources/images/Pneunostic-Logo.svg";
+
 
 // Configure Firebase.
 const firebaseConfig = {
@@ -22,7 +24,9 @@ const uiConfig = {
   // Popup signin flow rather than redirect flow.
   signInFlow: "popup",
   // We will display Google and Facebook as auth providers.
-  signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
+  signInOptions: [
+    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+  ],
   callbacks: {
     // Avoid redirects after sign-in.
     signInSuccessWithAuthResult: () => false,
@@ -44,23 +48,31 @@ function SignInScreen() {
 
   if (!isSignedIn) {
     return (
-      <main class="form-signin">
-        <img
-          src={nusLogo}
-          class="mb-5"
-          width="219"
-          height="auto"
-          alt="NUS Logo"
-        />
+      <body id="body-sign-in">
+        <div id="div-sign-in">
+          <div class="d-flex justify-content-center">
+            <img
+              src={Pneunostics}
+              class=""
+              width="190"
+              height="auto"
+              alt="NUS Logo"
+            />
+          </div>
 
-        <StyledFirebaseAuth
-          class="rounded"
-          uiCallback={(ui) => ui.disableAutoSignIn()}
-          uiConfig={uiConfig}
-          firebaseAuth={firebase.auth()}
-        />
-        <p class="mt-5 mb-3 text-muted">© 2021-2022</p>
-      </main>
+          <hr></hr>
+
+          <StyledFirebaseAuth
+            class="rounded"
+            uiCallback={(ui) => ui.disableAutoSignIn()}
+            uiConfig={uiConfig}
+            firebaseAuth={firebase.auth()}
+          />
+          <div class="d-flex justify-content-center">
+            <p class="mt-5 mb-3 text-muted">© 2021-2022</p>
+          </div>
+        </div>
+      </body>
     );
   }
   

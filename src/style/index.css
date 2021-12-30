@@ -502,6 +502,22 @@
   /* vh stands for view-port height, 1vh is 1% of screen height */
 }
 
+#body-sign-in {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f8f9fa;
+}
+
+#div-sign-in {
+  width: 100%;
+  max-width: 500px;
+  padding: 15px;
+  margin: auto;
+}
+
 .bg-supporting {
   background-color: #0dcaf0 !important;
   color: #f8f9fa;

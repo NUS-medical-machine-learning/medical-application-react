@@ -8,6 +8,14 @@
   height: 100vh; /* vh stands for view-port height, 1vh is 1% of screen height */
 }
 
+#body-sign-in {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: $light;
+}
+
 $body-bg: $light;
 
 $tertiary: $light;
