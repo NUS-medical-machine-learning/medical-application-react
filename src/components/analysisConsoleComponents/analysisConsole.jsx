@@ -6,12 +6,18 @@ import {
   COMPOUND_DETECTION_ROOT_URL,
 } from "../../apiCalls/common";
 import ControlButtons from "./controlButtons";
-import SubjectIdInput from "./sujectIdInput";
+import SubjectIdInput from "./subjectIdInput";
 import Breathe from "./Breath/Breath";
 import firebase from "firebase/compat/app";
 
 import { ToastContainer } from "react-toastify";
 import { Slide } from "react-toastify";
+
+import { TestingProgress } from "./testing-progress.js";
+
+// import { subjectIdPrefix } from "./subjectIdInput";
+
+const DEFAULT_SUBJECT_ID = "";
 
 function AnalysisConsole() {
   const [breatheSocket] = useSocket(BREATH_INLET_ROOT_URL);
@@ -20,21 +26,21 @@ function AnalysisConsole() {
   initialize(breatheSocket, compoundDetectionSocket);
 
   const [darkMode, setDarkMode] = useState(false);
-  const [subjectId, setSubjectId] = useState(" ");
+  const [subjectId, setSubjectId] = useState(DEFAULT_SUBJECT_ID);
+  const [testingProgressState, setTestingProgressState] = useState(
+    TestingProgress.New
+  );
 
   const handleChange = (event) => {
     setSubjectId(event.target.value);
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      alert("A name was entered: " + subjectId);
-    }
-  };
+  // const getSubjectInfo = () => {
+  //   return subjectIdPrefix + subjectId;
+  // };
 
-  const getSubjectInfo = () => {
-    return "BTX-DEV-" + subjectId;
-  };
+  const resetSubjectId = () => setSubjectId(DEFAULT_SUBJECT_ID);
+  
 
   let isDarkMode = darkMode ? "dark" : "";
 
@@ -103,15 +109,20 @@ function AnalysisConsole() {
                     </div>
                     <div class="card-body bg-tertiary">
                       <SubjectIdInput
-                        onKeyDown={handleKeyDown}
                         onChange={handleChange}
+                        subjectId={subjectId}
+                        testingProgressState={testingProgressState}
                       />
                     </div>
                   </div>
                 </div>
               </div>
               <div className="col-3">
-                <ControlButtons subjectInfo={getSubjectInfo} />
+                <ControlButtons
+                  testingProgressState={testingProgressState}
+                  setTestingProgressState={setTestingProgressState}
+                  resetSubjectId={resetSubjectId}
+                />
               </div>
             </div>
           </div>
@@ -140,5 +151,3 @@ function initialize(breatheSocket, compoundDetectionSocket) {
 }
 
 export default AnalysisConsole;
-
-

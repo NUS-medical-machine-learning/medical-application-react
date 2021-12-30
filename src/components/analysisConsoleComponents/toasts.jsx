@@ -76,8 +76,14 @@ const toastConfig = {
 };
 
 const toastBootstrap = (mess) => {
-    return <div class="toast-header">
-      <strong class="me-auto">{mess}</strong>
-      <small>{new Date().toLocaleTimeString()}</small>
+  return (
+    <div class="d-flex justify-content-between">
+      <span class="fw-bold">{mess}</span>
+      <span>
+        <small class="fw-lighter text-muted">
+          {new Date().toLocaleTimeString()}
+        </small>
+      </span>
     </div>
-}
+  );
+};

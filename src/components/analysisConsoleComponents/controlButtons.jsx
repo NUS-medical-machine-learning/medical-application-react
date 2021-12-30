@@ -6,6 +6,8 @@ import {
 
 import { ToastStart, ToastStop } from "./toasts";
 
+import { TestingProgress } from "./testing-progress.js";
+
 class ControlButtons extends Component {
   postCancelSample = () => {
     return fetch(`${COMPOUND_DETECTION_SERVICE_URL}/events`, {
@@ -100,27 +102,63 @@ class ControlButtons extends Component {
   render() {
     return (
       <div className="d-grid gap-2">
-        <button
-          onClick={this.handleBreatheStart}
-          className="btn btn-outline-success btn-lg shadow"
-        >
-          Start
-        </button>
-        <button
-          onClick={this.handleBreatheStop}
-          className="btn btn-outline-danger btn-lg shadow"
-        >
-          Stop
-        </button>
-        <button
-          onClick={this.props.onToggleDarkMode}
-          className="btn btn-outline-info btn-lg shadow"
-        >
-          Refresh User
-        </button>
+        {mainButton(this.props.testingProgressState, this.handleBreatheStart)}
+        {subjectIdButton(this.props)}
       </div>
     );
   }
+}
+
+function mainButton(testingProgressState, handleBreatheStart) {
+  let btnStyle = "";
+  let isDisable = true;
+
+  switch (testingProgressState) {
+    case TestingProgress.New:
+      btnStyle = "btn btn-outline-success btn-lg shadow";
+      break;
+    case TestingProgress.SubjectIdReceived:
+      btnStyle = "btn btn-outline-success btn-lg shadow";
+      isDisable = false;
+      break;
+    default:
+    // code block
+  }
+
+  return (
+    <button onClick={handleBreatheStart} className={btnStyle} disabled={isDisable}>
+      Start
+    </button>
+  );
+}
+
+function subjectIdButton(props) {
+  let btnLabel = "";
+  let btnOnClick = () => {};
+
+  switch (props.testingProgressState) {
+    case TestingProgress.New:
+      btnOnClick = () => props.setTestingProgressState(
+        TestingProgress.SubjectIdReceived
+      );
+      btnLabel = "Lock Subject ID";
+      break;
+    case TestingProgress.SubjectIdReceived:
+      btnOnClick = () => {
+        props.setTestingProgressState(TestingProgress.New);
+        props.resetSubjectId();
+      }
+      btnLabel = "Refresh Subject ID";
+      break;
+    default:
+      btnLabel = "Refresh Subject ID";
+  }
+
+  return (
+    <button 
+    onClick={btnOnClick}
+    className="btn btn-outline-info btn-lg shadow">{btnLabel}</button>
+  );
 }
 
 export default ControlButtons;
