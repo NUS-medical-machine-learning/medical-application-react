@@ -50,14 +50,15 @@ function AnalysisConsole() {
   const resetSubjectId = () => setSubjectId(DEFAULT_SUBJECT_ID);
 
   const resetToNewProgress = () => {
-    resetSubjectId()
+    resetSubjectId();
+    handleBreatheStop();
     setTestingProgressState(TestingProgress.New);
     renewData(chartRef.current);
   }
 
   useWindowUnloadEffect(() => {
     console.log("unloaded");
-    handleBreatheStop();
+    resetToNewProgress();
   }, true);
 
   // useEffect(() => {
