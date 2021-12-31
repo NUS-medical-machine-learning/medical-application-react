@@ -132,13 +132,13 @@ const updateData = (chart, label, data) => {
   chart.update();
 };
 
-export default function BreathTimeSeriesContainer({ socket }) {
-  const chartRef = useRef(null);
+export default function BreathTimeSeriesContainer(props) {
+  // const chartRef = useRef(null);
 
   useEffect(() => {
-    const chart = chartRef.current;
+    const chart = props.chartRef.current;
 
-    socket.on("detection", ({ data }) => {
+    props.socket.on("detection", ({ data }) => {
       const unixTimestamp = data.scores[0][0][0];
       const date = new Date(unixTimestamp * 1000);
       updateData(chart, date, data.scores[0][1][0]);
@@ -148,7 +148,7 @@ export default function BreathTimeSeriesContainer({ socket }) {
   return (
     <Line
       className=""
-      ref={chartRef}
+      ref={props.chartRef}
       options={options}
       data={dataset}
       plugins={[chartAreaBorder]}

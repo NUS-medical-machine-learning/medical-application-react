@@ -61,12 +61,12 @@ function mainButton(props, handleBreatheStart, buttonsController) {
     case TestingProgress.AnalyzingStopped:
       btnStyle = "btn btn-outline-warning btn-lg shadow";
       btnName = "Send Data";
-    case TestingProgress.DataSent:
-      btnStyle = "btn btn-outline-warning btn-lg shadow";
-      btnName = "Waiting for result";
       btnOnClick = () => {
         handleDataSend(props);
       };
+    case TestingProgress.DataSent:
+      btnStyle = "btn btn-outline-warning btn-lg shadow";
+      btnName = "Waiting for result";
     default:
     // code block
   }

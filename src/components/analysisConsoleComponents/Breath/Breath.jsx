@@ -16,5 +16,10 @@ export default function Breathe(props) {
     };
   }, [windowWidth]);
 
-  return <BreatheTimeSeriesContainer socket={props.compoundDetectionSocket} />;
+  return (
+    <BreatheTimeSeriesContainer
+      chartRef={chartRef}
+      socket={props.compoundDetectionSocket}
+    />
+  );
 }
