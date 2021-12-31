@@ -1,6 +1,10 @@
 import React from "react";
 import { toast } from "react-toastify";
 
+export const ToastSubjectIdLocked = (subjectId) => {
+  return toast(toastBootstrap("Subject ID: " + subjectId + " Locked"));
+}
+
 export const ToastStart = {
   loading: function () {
     return toast.loading("Starting ...", toastConfig);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "./navbar";
 import useSocket from "../../helpers/Hooks/useSocket";
 import {
@@ -14,6 +14,8 @@ import { ToastContainer } from "react-toastify";
 import { Slide } from "react-toastify";
 
 import { TestingProgress } from "./testing-progress.js";
+
+import { handleBreatheStop } from "./controlButtons";
 
 // import { subjectIdPrefix } from "./subjectIdInput";
 
@@ -40,7 +42,14 @@ function AnalysisConsole() {
   // };
 
   const resetSubjectId = () => setSubjectId(DEFAULT_SUBJECT_ID);
-  
+
+  useEffect(() => {
+    return () => {
+      console.log("Unmount");
+      handleBreatheStop();
+      // Anything in here is fired on component unmount.
+    };
+  }, []);
 
   let isDarkMode = darkMode ? "dark" : "";
 
@@ -121,6 +130,7 @@ function AnalysisConsole() {
                 <ControlButtons
                   testingProgressState={testingProgressState}
                   setTestingProgressState={setTestingProgressState}
+                  subjectId={subjectId}
                   resetSubjectId={resetSubjectId}
                 />
               </div>
