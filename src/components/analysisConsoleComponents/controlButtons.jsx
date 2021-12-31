@@ -22,14 +22,14 @@ class ControlButtons extends Component {
   render() {
     return (
       <div className="d-grid gap-2">
-        {mainButton(this.props, handleBreatheStart, this)}
+        {mainButton(this.props, handleBreatheStart)}
         {subjectIdButton(this.props)}
       </div>
     );
   }
 }
 
-function mainButton(props, handleBreatheStart, buttonsController) {
+function mainButton(props, handleBreatheStart) {
   let btnStyle = "";
   let btnName = "";
   let isDisable = false;
@@ -96,8 +96,7 @@ function subjectIdButton(props) {
       break;
     default:
       btnOnClick = () => {
-        props.setTestingProgressState(TestingProgress.New);
-        props.resetSubjectId();
+        props.resetToNewProgress();
       };
       btnLabel = "Refresh Subject ID";
   }

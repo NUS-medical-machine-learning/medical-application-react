@@ -17,6 +17,8 @@ import { TestingProgress } from "./testing-progress.js";
 
 import { handleBreatheStop } from "./controlButtons";
 
+import { renewData } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContainer";
+
 // import { subjectIdPrefix } from "./subjectIdInput";
 
 const DEFAULT_SUBJECT_ID = "";
@@ -46,6 +48,12 @@ function AnalysisConsole() {
   // };
 
   const resetSubjectId = () => setSubjectId(DEFAULT_SUBJECT_ID);
+
+  const resetToNewProgress = () => {
+    resetSubjectId()
+    setTestingProgressState(TestingProgress.New);
+    renewData(chartRef.current);
+  }
 
   useWindowUnloadEffect(() => {
     console.log("unloaded");
@@ -141,7 +149,7 @@ function AnalysisConsole() {
                   testingProgressState={testingProgressState}
                   setTestingProgressState={setTestingProgressState}
                   subjectId={subjectId}
-                  resetSubjectId={resetSubjectId}
+                  resetToNewProgress={resetToNewProgress}
                   isLoadingMainButton={isLoadingMainButton}
                   setIsLoadingMainButton={setIsLoadingMainButton}
                 />
