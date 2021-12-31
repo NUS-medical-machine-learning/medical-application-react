@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import NavBar from "./navbar";
 import useSocket from "../../helpers/Hooks/useSocket";
 import {
@@ -43,13 +43,18 @@ function AnalysisConsole() {
 
   const resetSubjectId = () => setSubjectId(DEFAULT_SUBJECT_ID);
 
-  useEffect(() => {
-    return () => {
-      console.log("Unmount");
-      handleBreatheStop();
-      // Anything in here is fired on component unmount.
-    };
-  }, []);
+  useWindowUnloadEffect(() => {
+    console.log("unloaded");
+    handleBreatheStop();
+  }, true);
+
+  // useEffect(() => {
+  //   return () => {
+  //     console.log("Unmount");
+  //     handleBreatheStop();
+  //     // Anything in here is fired on component unmount.
+  //   };
+  // }, []);
 
   let isDarkMode = darkMode ? "dark" : "";
 
@@ -141,6 +146,24 @@ function AnalysisConsole() {
     </body>
   );
 }
+
+const useWindowUnloadEffect = (handler, callOnCleanup) => {
+  const cb = useRef();
+
+  cb.current = handler;
+
+  useEffect(() => {
+    const handler = () => cb.current();
+
+    window.addEventListener("beforeunload", handler);
+
+    return () => {
+      if (callOnCleanup) handler();
+
+      window.removeEventListener("beforeunload", handler);
+    };
+  }, [callOnCleanup]);
+};
 
 function initialize(breatheSocket, compoundDetectionSocket) {
   if (process.env.REACT_APP_SKIN_IN_USE === "TRACK") {
