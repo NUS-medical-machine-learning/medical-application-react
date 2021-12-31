@@ -64,9 +64,11 @@ function mainButton(props, handleBreatheStart, buttonsController) {
       btnOnClick = () => {
         handleDataSend(props);
       };
+      break;
     case TestingProgress.DataSent:
       btnStyle = "btn btn-outline-warning btn-lg shadow";
       btnName = "Waiting for result";
+      break;
     default:
     // code block
   }

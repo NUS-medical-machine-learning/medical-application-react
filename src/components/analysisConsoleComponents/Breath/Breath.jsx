@@ -18,7 +18,7 @@ export default function Breathe(props) {
 
   return (
     <BreatheTimeSeriesContainer
-      chartRef={chartRef}
+      chartRef={props.chartRef}
       socket={props.compoundDetectionSocket}
     />
   );

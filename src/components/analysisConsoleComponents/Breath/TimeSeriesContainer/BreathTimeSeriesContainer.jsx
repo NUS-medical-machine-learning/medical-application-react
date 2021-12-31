@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import "chartjs-adapter-moment";
 
 
@@ -135,20 +135,23 @@ const updateData = (chart, label, data) => {
 export default function BreathTimeSeriesContainer(props) {
   // const chartRef = useRef(null);
 
-  useEffect(() => {
-    const chart = props.chartRef.current;
+  const chartRef = props.chartRef;
+  const socket = props.socket;
 
-    props.socket.on("detection", ({ data }) => {
+  useEffect(() => {
+    const chart = chartRef.current;
+
+    socket.on("detection", ({ data }) => {
       const unixTimestamp = data.scores[0][0][0];
       const date = new Date(unixTimestamp * 1000);
       updateData(chart, date, data.scores[0][1][0]);
     });
-  }, [socket]);
+  }, [socket, chartRef]);
 
   return (
     <Line
       className=""
-      ref={props.chartRef}
+      ref={chartRef}
       options={options}
       data={dataset}
       plugins={[chartAreaBorder]}
