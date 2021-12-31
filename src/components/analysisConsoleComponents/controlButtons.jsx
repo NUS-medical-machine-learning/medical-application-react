@@ -28,6 +28,9 @@ function mainButton(props, handleBreatheStart, buttonsController) {
   let btnStyle = "";
   let btnName = "Start Sampling";
   let isDisable = false;
+  let btnOnClick = () => {
+    handleBreatheStart(props);
+  };
 
   switch (props.testingProgressState) {
     case TestingProgress.New:
@@ -39,6 +42,10 @@ function mainButton(props, handleBreatheStart, buttonsController) {
       break;
     case TestingProgress.AnalyzingStarted:
       btnStyle = "btn btn-outline-danger btn-lg shadow";
+      btnOnClick = () => {
+        handleBreatheStop(props);
+      };
+      btnName = "Stop Sampling";
       break;
     default:
     // code block
@@ -47,11 +54,7 @@ function mainButton(props, handleBreatheStart, buttonsController) {
   isDisable = isDisable || props.isLoadingMainButton;
 
   return (
-    <button
-      onClick={() => handleBreatheStart(props)}
-      className={btnStyle}
-      disabled={isDisable}
-    >
+    <button onClick={btnOnClick} className={btnStyle} disabled={isDisable}>
       {btnName}
     </button>
   );
@@ -158,9 +161,11 @@ const handleBreatheStart = (props) => {
     });
 };
 
-export const handleBreatheStop = () => {
+export const handleBreatheStop = (props) => {
   //   breathDispatch({ eventStatus: "Stop isLoading" });
   const id = ToastStop.loading();
+  props.setIsLoadingMainButton(true);
+
   postValveIsRegulated(false)
     .then((data) => {
       if (data.status === "fail") {
@@ -178,10 +183,14 @@ export const handleBreatheStop = () => {
       }
       //   breathDispatch({ eventStatus: "false: waitingForKey" });
       ToastStop.success(id);
+      props.setTestingProgressState(TestingProgress.AnalyzingStopped);
     })
     .catch((err) => {
       console.log(err.message);
       ToastStop.error(id);
+    })
+    .finally(() => {
+      props.setIsLoadingMainButton(false);
     });
 };
 
