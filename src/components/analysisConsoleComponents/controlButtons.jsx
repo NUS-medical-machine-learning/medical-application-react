@@ -26,7 +26,7 @@ class ControlButtons extends Component {
 
 function mainButton(props, handleBreatheStart, buttonsController) {
   let btnStyle = "";
-  let btnName = "Start Sampling";
+  let btnName = "";
   let isDisable = false;
   let btnOnClick = () => {
     handleBreatheStart(props);
@@ -35,10 +35,12 @@ function mainButton(props, handleBreatheStart, buttonsController) {
   switch (props.testingProgressState) {
     case TestingProgress.New:
       btnStyle = "btn btn-outline-success btn-lg shadow";
+      btnName = "Start Sampling";
       isDisable = true;
       break;
     case TestingProgress.SubjectIdReceived:
       btnStyle = "btn btn-outline-success btn-lg shadow";
+      btnName = "Start Sampling";
       break;
     case TestingProgress.AnalyzingStarted:
       btnStyle = "btn btn-outline-danger btn-lg shadow";
@@ -47,6 +49,9 @@ function mainButton(props, handleBreatheStart, buttonsController) {
       };
       btnName = "Stop Sampling";
       break;
+    case TestingProgress.AnalyzingStopped:
+      btnStyle = "btn btn-outline-warning btn-lg shadow";
+      btnName = "Send Data";
     default:
     // code block
   }
