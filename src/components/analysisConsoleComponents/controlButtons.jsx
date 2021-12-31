@@ -94,14 +94,11 @@ function subjectIdButton(props) {
       };
       btnLabel = "Lock Subject ID";
       break;
-    case TestingProgress.SubjectIdReceived:
+    default:
       btnOnClick = () => {
         props.setTestingProgressState(TestingProgress.New);
         props.resetSubjectId();
       };
-      btnLabel = "Refresh Subject ID";
-      break;
-    default:
       btnLabel = "Refresh Subject ID";
   }
 
