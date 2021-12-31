@@ -9,16 +9,82 @@ import { ToastStart, ToastStop, ToastSubjectIdLocked } from "./toasts";
 import { TestingProgress } from "./testing-progress.js";
 
 class ControlButtons extends Component {
-  
+  constructor(props) {
+    super(props);
+    this.state = { isLoadingMainButton: false };
+  }
 
   render() {
     return (
       <div className="d-grid gap-2">
-        {mainButton(this.props.testingProgressState, handleBreatheStart)}
+        {mainButton(this.props, handleBreatheStart, this)}
         {subjectIdButton(this.props)}
       </div>
     );
   }
+}
+
+function mainButton(props, handleBreatheStart, buttonsController) {
+  let btnStyle = "";
+  let btnName = "Start Sampling";
+  let isDisable = false;
+
+  switch (props.testingProgressState) {
+    case TestingProgress.New:
+      btnStyle = "btn btn-outline-success btn-lg shadow";
+      isDisable = true;
+      break;
+    case TestingProgress.SubjectIdReceived:
+      btnStyle = "btn btn-outline-success btn-lg shadow";
+      break;
+    case TestingProgress.AnalyzingStarted:
+      btnStyle = "btn btn-outline-danger btn-lg shadow";
+      break;
+    default:
+    // code block
+  }
+
+  isDisable = isDisable || props.isLoadingMainButton;
+
+  return (
+    <button
+      onClick={() => handleBreatheStart(props)}
+      className={btnStyle}
+      disabled={isDisable}
+    >
+      {btnName}
+    </button>
+  );
+}
+
+function subjectIdButton(props) {
+  let btnLabel = "";
+  let btnOnClick = () => {};
+
+  switch (props.testingProgressState) {
+    case TestingProgress.New:
+      btnOnClick = () => {
+        props.setTestingProgressState(TestingProgress.SubjectIdReceived);
+        ToastSubjectIdLocked(props.subjectId);
+      };
+      btnLabel = "Lock Subject ID";
+      break;
+    case TestingProgress.SubjectIdReceived:
+      btnOnClick = () => {
+        props.setTestingProgressState(TestingProgress.New);
+        props.resetSubjectId();
+      };
+      btnLabel = "Refresh Subject ID";
+      break;
+    default:
+      btnLabel = "Refresh Subject ID";
+  }
+
+  return (
+    <button onClick={btnOnClick} className="btn btn-outline-info btn-lg shadow">
+      {btnLabel}
+    </button>
+  );
 }
 
 const postCancelSample = () => {
@@ -56,10 +122,12 @@ const postStartStopBreathe = (action) => {
   });
 };
 
-const handleBreatheStart = () => {
+const handleBreatheStart = (props) => {
   //   breathDispatch({ eventStatus: "Start isLoading" });
-  console.log("Start Button Clicked");
+
   const id = ToastStart.loading();
+  props.setIsLoadingMainButton(true);
+
   postValveIsRegulated(true)
     .then((data) => {
       if (data.status === "fail") {
@@ -75,11 +143,17 @@ const handleBreatheStart = () => {
       }
       //   breathDispatch({ eventStatus: "true: waitingForKey" });
       ToastStart.success(id);
+      props.setTestingProgressState(TestingProgress.AnalyzingStarted);
     })
     .catch((err) => {
       console.log(err);
       setTimeout(() => {
         ToastStart.error(id);
+      }, 2000);
+    })
+    .finally(() => {
+      setTimeout(() => {
+        props.setIsLoadingMainButton(false);
       }, 2000);
     });
 };
@@ -110,62 +184,5 @@ export const handleBreatheStop = () => {
       ToastStop.error(id);
     });
 };
-
-function mainButton(testingProgressState, handleBreatheStart) {
-  let btnStyle = "";
-  let isDisable = true;
-
-  switch (testingProgressState) {
-    case TestingProgress.New:
-      btnStyle = "btn btn-outline-success btn-lg shadow";
-      break;
-    case TestingProgress.SubjectIdReceived:
-      btnStyle = "btn btn-outline-success btn-lg shadow";
-      isDisable = false;
-      break;
-    default:
-    // code block
-  }
-
-  return (
-    <button
-      onClick={handleBreatheStart}
-      className={btnStyle}
-      disabled={isDisable}
-    >
-      Start
-    </button>
-  );
-}
-
-function subjectIdButton(props) {
-  let btnLabel = "";
-  let btnOnClick = () => {};
-
-  switch (props.testingProgressState) {
-    case TestingProgress.New:
-      btnOnClick = () => {
-        props.setTestingProgressState(TestingProgress.SubjectIdReceived);
-        ToastSubjectIdLocked(props.subjectId);
-      };
-      btnLabel = "Lock Subject ID";
-      break;
-    case TestingProgress.SubjectIdReceived:
-      btnOnClick = () => {
-        props.setTestingProgressState(TestingProgress.New);
-        props.resetSubjectId();
-      };
-      btnLabel = "Refresh Subject ID";
-      break;
-    default:
-      btnLabel = "Refresh Subject ID";
-  }
-
-  return (
-    <button onClick={btnOnClick} className="btn btn-outline-info btn-lg shadow">
-      {btnLabel}
-    </button>
-  );
-}
 
 export default ControlButtons;

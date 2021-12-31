@@ -33,6 +33,8 @@ function AnalysisConsole() {
     TestingProgress.New
   );
 
+  const [isLoadingMainButton, setIsLoadingMainButton] = useState(false);
+
   const handleChange = (event) => {
     setSubjectId(event.target.value);
   };
@@ -137,6 +139,8 @@ function AnalysisConsole() {
                   setTestingProgressState={setTestingProgressState}
                   subjectId={subjectId}
                   resetSubjectId={resetSubjectId}
+                  isLoadingMainButton={isLoadingMainButton}
+                  setIsLoadingMainButton={setIsLoadingMainButton}
                 />
               </div>
             </div>
