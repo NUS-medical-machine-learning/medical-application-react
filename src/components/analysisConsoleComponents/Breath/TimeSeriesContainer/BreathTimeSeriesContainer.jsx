@@ -133,7 +133,9 @@ const updateData = (chart, label, data) => {
 };
 
 export const renewData = (chart) => {
-  chart.data = [];
+  chart.data.labels = [];
+  chart.data.datasets = [];
+  chart.update();
 }
 
 export default function BreathTimeSeriesContainer(props) {
