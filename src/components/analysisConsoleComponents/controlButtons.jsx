@@ -179,7 +179,7 @@ const handleBreatheStart = (props) => {
     });
 };
 
-export const handleBreatheStop = (props) => {
+const handleBreatheStop = (props) => {
   //   breathDispatch({ eventStatus: "Stop isLoading" });
   const id = ToastStop.loading();
   props.setIsLoadingMainButton(true);
@@ -209,6 +209,31 @@ export const handleBreatheStop = (props) => {
     })
     .finally(() => {
       props.setIsLoadingMainButton(false);
+    });
+};
+
+export const handleBreatheStopSilent = () => {
+  //   breathDispatch({ eventStatus: "Stop isLoading" });
+
+  postValveIsRegulated(false)
+    .then((data) => {
+      if (data.status === "fail") {
+        return console.log(data.message);
+      }
+    })
+    .catch((err) => console.log(err));
+
+  postCancelSample().catch((error) => console.log(error.message));
+
+  postStartStopBreathe("STOP")
+    .then((data) => {
+      if (data.status === "fail") {
+        return console.log(data.message);
+      }
+      //   breathDispatch({ eventStatus: "false: waitingForKey" });
+    })
+    .catch((err) => {
+      console.log(err.message);
     });
 };
 

@@ -15,7 +15,7 @@ import { Slide } from "react-toastify";
 
 import { TestingProgress } from "./testing-progress.js";
 
-import { handleBreatheStop } from "./controlButtons";
+import { handleBreatheStopSilent } from "./controlButtons";
 
 import { renewData } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContainer";
 
@@ -51,7 +51,7 @@ function AnalysisConsole() {
 
   const resetToNewProgress = () => {
     resetSubjectId();
-    handleBreatheStop();
+    handleBreatheStopSilent();
     setTestingProgressState(TestingProgress.New);
     renewData(chartRef.current);
   }
