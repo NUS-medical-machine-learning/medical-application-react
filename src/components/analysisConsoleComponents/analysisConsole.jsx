@@ -35,6 +35,8 @@ function AnalysisConsole() {
 
   const [isLoadingMainButton, setIsLoadingMainButton] = useState(false);
 
+  const chartRef = useRef(null);
+
   const handleChange = (event) => {
     setSubjectId(event.target.value);
   };
@@ -96,6 +98,7 @@ function AnalysisConsole() {
             </div>
             <div class="card-body bg-tertiary">
               <Breathe
+                chartRef={chartRef}
                 socket={breatheSocket}
                 compoundDetectionSocket={compoundDetectionSocket}
               />

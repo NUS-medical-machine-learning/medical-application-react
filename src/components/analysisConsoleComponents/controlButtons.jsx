@@ -4,7 +4,12 @@ import {
   COMPOUND_DETECTION_SERVICE_URL,
 } from "../../apiCalls/common";
 
-import { ToastStart, ToastStop, ToastSubjectIdLocked } from "./toasts";
+import {
+  ToastStart,
+  ToastStop,
+  ToastSubjectIdLocked,
+  ToastDataSent,
+} from "./toasts";
 
 import { TestingProgress } from "./testing-progress.js";
 
@@ -28,30 +33,40 @@ function mainButton(props, handleBreatheStart, buttonsController) {
   let btnStyle = "";
   let btnName = "";
   let isDisable = false;
-  let btnOnClick = () => {
-    handleBreatheStart(props);
-  };
+  let btnOnClick = () => {};
 
   switch (props.testingProgressState) {
     case TestingProgress.New:
       btnStyle = "btn btn-outline-success btn-lg shadow";
       btnName = "Start Sampling";
       isDisable = true;
+      btnOnClick = () => {
+        handleBreatheStart(props);
+      };
       break;
     case TestingProgress.SubjectIdReceived:
       btnStyle = "btn btn-outline-success btn-lg shadow";
       btnName = "Start Sampling";
+      btnOnClick = () => {
+        handleBreatheStart(props);
+      };
       break;
     case TestingProgress.AnalyzingStarted:
       btnStyle = "btn btn-outline-danger btn-lg shadow";
+      btnName = "Stop Sampling";
       btnOnClick = () => {
         handleBreatheStop(props);
       };
-      btnName = "Stop Sampling";
       break;
     case TestingProgress.AnalyzingStopped:
       btnStyle = "btn btn-outline-warning btn-lg shadow";
       btnName = "Send Data";
+    case TestingProgress.DataSent:
+      btnStyle = "btn btn-outline-warning btn-lg shadow";
+      btnName = "Waiting for result";
+      btnOnClick = () => {
+        handleDataSend(props);
+      };
     default:
     // code block
   }
@@ -197,6 +212,31 @@ export const handleBreatheStop = (props) => {
     .finally(() => {
       props.setIsLoadingMainButton(false);
     });
+};
+
+const handleDataSend = (props) => {
+  const id = ToastDataSent.loading();
+  props.setIsLoadingMainButton(true);
+
+  // postStartStopBreathe("STOP")
+  //   .then((data) => {
+  //     if (data.status === "fail") {
+  //       return console.log(data.message);
+  //     }
+  //     //   breathDispatch({ eventStatus: "false: waitingForKey" });
+  //     ToastDataSent.success(id);
+  //     props.setTestingProgressState(TestingProgress.DataSent);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err.message);
+  //     ToastStop.error(id);
+  //   })
+  //   .finally(() => {
+  //     props.setIsLoadingMainButton(false);
+  //   });
+
+  ToastDataSent.success(id);
+  props.setTestingProgressState(TestingProgress.DataSent);
 };
 
 export default ControlButtons;
