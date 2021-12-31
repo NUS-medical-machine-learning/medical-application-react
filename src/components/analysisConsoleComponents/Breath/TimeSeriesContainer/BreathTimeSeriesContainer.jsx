@@ -134,7 +134,8 @@ const updateData = (chart, label, data) => {
 
 export const renewData = (chart) => {
   chart.data.labels = [];
-  chart.data.datasets = [];
+  chart.data.datasets[0].data = [];
+  chart.data.datasets[1].data = [];
   chart.update();
 }
 
