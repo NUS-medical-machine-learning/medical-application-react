@@ -20,6 +20,8 @@ export default function Breathe(props) {
     <BreatheTimeSeriesContainer
       chartRef={props.chartRef}
       socket={props.compoundDetectionSocket}
+      isSamplingReady={props.isSamplingReady}
+      setIsSamplingReady={props.setIsSamplingReady}
     />
   );
 }

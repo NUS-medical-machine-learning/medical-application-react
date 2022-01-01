@@ -7,12 +7,3 @@ export class TestingProgress {
   static DataSent = new TestingProgress();
   static Finished = new TestingProgress();
 }
-
-// export const TestingProgress = [
-//   "Start",
-//   "SubjectIdReceived",
-//   "AnalyzingStarted",
-//   "AnalyzingStopped",
-//   "DataSent",
-//   "Finished",
-// ];

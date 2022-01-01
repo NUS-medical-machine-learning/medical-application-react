@@ -124,11 +124,43 @@ const removeData = (chart) => {
   });
 };
 
-const updateData = (chart, label, data) => {
-  if (chart.data.labels.length > 20) { // Render about 10 seconds
+export class SamplingState {
+  static SamplingNew = new SamplingState();
+  static SamplingAlmostReady = new SamplingState();
+  static SamplingReady = new SamplingState();
+}
+
+const checkIfSamplingReady = (data, isSamplingReady, setIsSamplingReady) => {
+  switch (isSamplingReady) {
+    case 0:
+      if (data > 50) {
+        setIsSamplingReady(SamplingState.SamplingAlmostReady);
+      }
+      break;
+    case 1:
+      if (data < 20) {
+        setIsSamplingReady(SamplingState.SamplingReady);
+      }
+      break;
+    default:
+  }
+};
+
+const updateData = (
+  chart,
+  label,
+  data,
+  isSamplingReady,
+  setIsSamplingReady
+) => {
+  if (chart.data.labels.length > 20) {
+    // Render about 10 seconds
     removeData(chart);
-  } 
+  }
   addData(chart, label, data);
+
+  checkIfSamplingReady(data, isSamplingReady, setIsSamplingReady);
+
   chart.update();
 };
 
@@ -151,7 +183,7 @@ export default function BreathTimeSeriesContainer(props) {
     socket.on("detection", ({ data }) => {
       const unixTimestamp = data.scores[0][0][0];
       const date = new Date(unixTimestamp * 1000);
-      updateData(chart, date, data.scores[0][1][0]);
+      updateData(chart, date, data.scores[0][1][0], props.isSamplingReady, props.setIsSamplingReady);
     });
   }, [socket, chartRef]);
 
