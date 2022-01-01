@@ -132,12 +132,12 @@ export class SamplingState {
 
 const checkIfSamplingReady = (data, isSamplingReady, setIsSamplingReady) => {
   switch (isSamplingReady) {
-    case 0:
+    case SamplingState.SamplingNew:
       if (data > 50) {
         setIsSamplingReady(SamplingState.SamplingAlmostReady);
       }
       break;
-    case 1:
+    case SamplingState.SamplingAlmostReady:
       if (data < 20) {
         setIsSamplingReady(SamplingState.SamplingReady);
       }
@@ -159,9 +159,9 @@ const updateData = (
   }
   addData(chart, label, data);
 
-  checkIfSamplingReady(data, isSamplingReady, setIsSamplingReady);
-
   chart.update();
+
+  checkIfSamplingReady(data, isSamplingReady, setIsSamplingReady);
 };
 
 export const renewData = (chart) => {
