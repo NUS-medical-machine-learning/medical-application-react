@@ -55,6 +55,8 @@ function AnalysisConsole() {
 
   const resetToNewProgress = () => {
     resetSubjectId();
+    setIsLoadingMainButton(false);
+    setIsSamplingReady(SamplingState.SamplingNew);
     handleBreatheStopSilent();
     setTestingProgressState(TestingProgress.New);
     renewData(chartRef.current);
