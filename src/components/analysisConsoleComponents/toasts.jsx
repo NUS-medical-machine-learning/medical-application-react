@@ -58,6 +58,7 @@ export const ToastDataSent = {
       render: toastBootstrap("Data Sent👌"),
       type: "success",
       isLoading: false,
+      ...toastConfig,
     });
   },
   error: function (id) {
@@ -65,6 +66,7 @@ export const ToastDataSent = {
       render: toastBootstrap("Fail to send 🤯"),
       type: "error",
       isLoading: false,
+      ...toastConfig,
     });
   },
 };

@@ -73,14 +73,11 @@ const options = {
       },
       title: {
         display: true,
-        text: "Date",
+        text: "Time",
       },
       ticks: {
         autoSkip: false,
         maxRotation: 0,
-        major: {
-          enabled: true,
-        },
       },
     },
     y: {
