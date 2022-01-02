@@ -16,7 +16,7 @@ import {
 
 import { TestingProgress } from "./testing-progress.js";
 
-import { SamplingState } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContainer";
+// import { SamplingState } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContainer";
 
 function ControlButtons(props) {
   return (
@@ -235,29 +235,6 @@ export const handleBreatheStopSilent = () => {
     .catch((err) => {
       console.log(err.message);
     });
-};
-
-const handleDataSend = (props) => {
-  
-  props.setIsLoadingMainButton(true);
-
-  // postStartStopBreathe("STOP")
-  //   .then((data) => {
-  //     if (data.status === "fail") {
-  //       return console.log(data.message);
-  //     }
-  //     //   breathDispatch({ eventStatus: "false: waitingForKey" });
-  //     ToastDataSent.success(id);
-  //     props.setTestingProgressState(TestingProgress.DataSent);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err.message);
-  //     ToastStop.error(id);
-  //   })
-  //   .finally(() => {
-  //     props.setIsLoadingMainButton(false);
-  //   });
-
 };
 
 const uploadDataToDummyServer = (props) => {

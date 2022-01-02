@@ -78,11 +78,15 @@ const options = {
       ticks: {
         autoSkip: false,
         maxRotation: 0,
+        major: {
+          enabled: true,
+        },
       },
     },
     y: {
       // the data maximum used for determining the ticks is Math.max(dataMax, suggestedMax)
       suggestedMax: 30,
+      suggestedMin: -2,
     },
   },
 };
@@ -127,28 +131,26 @@ export class SamplingState {
   static SamplingReady = new SamplingState();
 }
 
-const checkIfSamplingReady = (data, isSamplingReady, setIsSamplingReady) => {
-  switch (isSamplingReady) {
-    case SamplingState.SamplingNew:
-      if (data > 50) {
-        setIsSamplingReady(SamplingState.SamplingAlmostReady);
-      }
-      break;
-    case SamplingState.SamplingAlmostReady:
-      if (data < 20) {
-        setIsSamplingReady(SamplingState.SamplingReady);
-      }
-      break;
-    default:
-  }
-};
+// const checkIfSamplingReady = (data, isSamplingReady, setIsSamplingReady) => {
+//   switch (isSamplingReady) {
+//     case SamplingState.SamplingNew:
+//       if (data > 50) {
+//         setIsSamplingReady(SamplingState.SamplingAlmostReady);
+//       }
+//       break;
+//     case SamplingState.SamplingAlmostReady:
+//       if (data < 20) {
+//         setIsSamplingReady(SamplingState.SamplingReady);
+//       }
+//       break;
+//     default:
+//   }
+// };
 
 const updateData = (
   chart,
   label,
   data,
-  isSamplingReady,
-  setIsSamplingReady
 ) => {
   if (chart.data.labels.length > 20) {
     // Render about 10 seconds
@@ -158,7 +160,7 @@ const updateData = (
 
   chart.update();
 
-  checkIfSamplingReady(data, isSamplingReady, setIsSamplingReady);
+  // checkIfSamplingReady(data, isSamplingReady, setIsSamplingReady);
 };
 
 export const renewData = (chart) => {
@@ -180,7 +182,7 @@ export default function BreathTimeSeriesContainer(props) {
     socket.on("detection", ({ data }) => {
       const unixTimestamp = data.scores[0][0][0];
       const date = new Date(unixTimestamp * 1000);
-      updateData(chart, date, data.scores[0][1][0], props.isSamplingReady, props.setIsSamplingReady);
+      updateData(chart, date, data.scores[0][1][0]);
     });
   });
 
