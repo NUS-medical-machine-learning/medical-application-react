@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   BREATH_INLET_SERVICE_URL,
   COMPOUND_DETECTION_SERVICE_URL,
@@ -11,24 +11,20 @@ import {
   ToastDataSent,
 } from "./toasts";
 
+// import request from "request";
+// import fs, { fchmodSync } from "fs";
+
 import { TestingProgress } from "./testing-progress.js";
 
 import { SamplingState } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContainer";
 
-class ControlButtons extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isLoadingMainButton: false };
-  }
-
-  render() {
-    return (
-      <div className="d-grid gap-2">
-        {mainButton(this.props, handleBreatheStart)}
-        {subjectIdButton(this.props)}
-      </div>
-    );
-  }
+function ControlButtons(props) {
+  return (
+    <div className="d-grid gap-2">
+      {mainButton(props, handleBreatheStart)}
+      {subjectIdButton(props)}
+    </div>
+  );
 }
 
 function mainButton(props, handleBreatheStart) {
@@ -59,7 +55,9 @@ function mainButton(props, handleBreatheStart) {
       btnOnClick = () => {
         handleBreatheStop(props);
       };
-      props.setIsLoadingMainButton(props.isSamplingReady != SamplingState.SamplingReady);
+      props.setIsLoadingMainButton(
+        props.isSamplingReady !== SamplingState.SamplingReady
+      );
       break;
     case TestingProgress.AnalyzingStopped:
       btnStyle = "btn btn-outline-warning btn-lg shadow";
@@ -148,6 +146,8 @@ const postStartStopBreathe = (action) => {
 
 const handleBreatheStart = (props) => {
   //   breathDispatch({ eventStatus: "Start isLoading" });
+
+  uploadDataToDummyServer();
 
   const id = ToastStart.loading();
   props.setIsLoadingMainButton(true);
@@ -264,5 +264,33 @@ const handleDataSend = (props) => {
   ToastDataSent.success(id);
   props.setTestingProgressState(TestingProgress.DataSent);
 };
+
+const uploadDataToDummyServer = () => {
+  let filepath = "final.pdf";
+
+  let requestGetOptions = {
+    method: "GET",
+  };
+  let formData = new FormData();
+
+  fetch(filepath, requestGetOptions).then((response) =>
+    formData.append("file", response)
+  );
+
+  var requestOptions = {
+    method: "POST",
+    body: formData,
+    redirect: "follow",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST",
+    },
+  };
+
+  fetch("https://www.aiteam.link:8100/upload_file", requestOptions)
+    .then((response) => response.json())
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
+}
 
 export default ControlButtons;

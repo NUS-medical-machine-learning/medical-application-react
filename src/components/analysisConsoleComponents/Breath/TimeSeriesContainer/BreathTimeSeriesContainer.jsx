@@ -185,7 +185,7 @@ export default function BreathTimeSeriesContainer(props) {
       const date = new Date(unixTimestamp * 1000);
       updateData(chart, date, data.scores[0][1][0], props.isSamplingReady, props.setIsSamplingReady);
     });
-  }, [socket, chartRef]);
+  });
 
   return (
     <Line
