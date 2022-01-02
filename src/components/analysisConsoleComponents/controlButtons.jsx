@@ -55,16 +55,14 @@ function mainButton(props, handleBreatheStart) {
       btnOnClick = () => {
         handleBreatheStop(props);
       };
-      props.setIsLoadingMainButton(
-        props.isSamplingReady !== SamplingState.SamplingReady
-      );
+      // props.setIsLoadingMainButton(
+      //   props.isSamplingReady !== SamplingState.SamplingReady
+      // );
       break;
     case TestingProgress.AnalyzingStopped:
       btnStyle = "btn btn-outline-warning btn-lg shadow";
-      btnName = "Send Data";
-      btnOnClick = () => {
-        handleDataSend(props);
-      };
+      btnName = "Sending Data";
+      isDisable = true;
       break;
     case TestingProgress.DataSent:
       btnStyle = "btn btn-outline-warning btn-lg shadow";
@@ -146,9 +144,6 @@ const postStartStopBreathe = (action) => {
 
 const handleBreatheStart = (props) => {
   //   breathDispatch({ eventStatus: "Start isLoading" });
-
-  uploadDataToDummyServer();
-
   const id = ToastStart.loading();
   props.setIsLoadingMainButton(true);
 
@@ -205,6 +200,8 @@ const handleBreatheStop = (props) => {
       //   breathDispatch({ eventStatus: "false: waitingForKey" });
       ToastStop.success(id);
       props.setTestingProgressState(TestingProgress.AnalyzingStopped);
+
+      uploadDataToDummyServer(props);
     })
     .catch((err) => {
       console.log(err.message);
@@ -241,7 +238,7 @@ export const handleBreatheStopSilent = () => {
 };
 
 const handleDataSend = (props) => {
-  const id = ToastDataSent.loading();
+  
   props.setIsLoadingMainButton(true);
 
   // postStartStopBreathe("STOP")
@@ -261,52 +258,57 @@ const handleDataSend = (props) => {
   //     props.setIsLoadingMainButton(false);
   //   });
 
-  ToastDataSent.success(id);
-  props.setTestingProgressState(TestingProgress.DataSent);
 };
 
-const uploadDataToDummyServer = () => {
+const uploadDataToDummyServer = (props) => {
+  const id = ToastDataSent.loading();
 
+  setTimeout(() => {
+    let formData = new FormData();
+    formData.append("time", "2022.01.02-16h52m39");
+    var requestOptions0 = {
+      method: "POST",
+      body: formData,
+      redirect: "follow",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST",
+      },
+    };
 
-  let formData = new FormData();
-  formData.append('time','2022.01.02-16h52m39')
-  var requestOptions0 = {
-    method: "POST",
-    body: formData,
-    redirect: "follow",
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST",
-    },
-  };
+    let bin_data = "";
+
+    fetch("http://localhost:8001/getfile", requestOptions0).then((response) => {
+      response.arrayBuffer().then((buffer) => {
+        bin_data = buffer;
+
+        console.log("bin_data", bin_data);
+
+        var requestOptions = {
+          method: "POST",
+          body: bin_data,
+          redirect: "follow",
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST",
+          },
+        };
+
+        fetch("https://www.aiteam.link:8100/upload_file", requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.info === "fail") {
+              return console.log(result);
+            }
+
+            ToastDataSent.success(id);
+            props.setTestingProgressState(TestingProgress.DataSent);
+          })
+          .catch((error) => console.log("error", error));
+      });
+    });
+  }, 5000);
+
   
-  let bin_data = '';
-  
-  fetch("http://localhost:8001/getfile", requestOptions0).then((response) =>
-  {
-        
-    response.arrayBuffer().then((buffer) => {
-     bin_data = buffer
-    
-    console.log('bin_data',bin_data)
-    
-
-  var requestOptions = {
-    method: "POST",
-    body: bin_data,
-    redirect: "follow",
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST",
-    },
-  };
-
-  fetch("https://www.aiteam.link:8100/upload_file", requestOptions)
-    .then((response) => response.json())
-    .then((result) => console.log(result))
-    .catch((error) => console.log("error", error));
-
-})
-})
-}
+};
 export default ControlButtons;
