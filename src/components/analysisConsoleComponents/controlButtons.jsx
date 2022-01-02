@@ -266,20 +266,34 @@ const handleDataSend = (props) => {
 };
 
 const uploadDataToDummyServer = () => {
-  let filepath = "final.pdf";
 
-  let requestGetOptions = {
-    method: "GET",
-  };
+
   let formData = new FormData();
-
-  fetch(filepath, requestGetOptions).then((response) =>
-    formData.append("file", response)
-  );
+  formData.append('time','2022.01.02-16h52m39')
+  var requestOptions0 = {
+    method: "POST",
+    body: formData,
+    redirect: "follow",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST",
+    },
+  };
+  
+  let bin_data = '';
+  
+  fetch("http://localhost:8001/getfile", requestOptions0).then((response) =>
+  {
+        
+    response.arrayBuffer().then((buffer) => {
+     bin_data = buffer
+    
+    console.log('bin_data',bin_data)
+    
 
   var requestOptions = {
     method: "POST",
-    body: formData,
+    body: bin_data,
     redirect: "follow",
     headers: {
       "Access-Control-Allow-Origin": "*",
@@ -291,6 +305,8 @@ const uploadDataToDummyServer = () => {
     .then((response) => response.json())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
-}
 
+})
+})
+}
 export default ControlButtons;
