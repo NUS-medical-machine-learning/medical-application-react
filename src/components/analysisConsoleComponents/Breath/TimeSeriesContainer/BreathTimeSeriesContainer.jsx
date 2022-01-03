@@ -165,8 +165,8 @@ const updateData = (
 export const renewData = (chart) => {
   while (chart.data.labels.length > 0) {
     removeData(chart);
-    chart.update();
   } 
+  chart.update();
 }
 
 export default function BreathTimeSeriesContainer(props) {
@@ -178,12 +178,13 @@ export default function BreathTimeSeriesContainer(props) {
   useEffect(() => {
     const chart = chartRef.current;
 
+    console.log("socket");
     socket.on("detection", ({ data }) => {
       const unixTimestamp = data.scores[0][0][0];
       const date = new Date(unixTimestamp * 1000);
       updateData(chart, date, data.scores[0][1][0]);
     });
-  });
+  }, [socket, chartRef]);
 
   return (
     <Line

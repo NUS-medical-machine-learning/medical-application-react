@@ -53,9 +53,9 @@ function AnalysisConsole() {
 
   const resetSubjectId = () => setSubjectId(DEFAULT_SUBJECT_ID);
 
-  function refreshPage() {
-    window.location.reload(false);
-  }
+  // function refreshPage() {
+  //   window.location.reload(false);
+  // }
 
   const resetToNewProgress = () => {
     resetSubjectId();
