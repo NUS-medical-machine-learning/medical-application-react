@@ -255,37 +255,42 @@ const uploadDataToDummyServer = (props) => {
 
     let bin_data = "";
 
-    fetch("http://localhost:8001/getfile", requestOptions0).then((response) => {
-      response.arrayBuffer().then((buffer) => {
-        bin_data = buffer;
+    fetch("http://localhost:8001/getfile", requestOptions0)
+      .then((response) => {
+        response.arrayBuffer().then((buffer) => {
+          bin_data = buffer;
 
-        console.log("bin_data", bin_data);
+          console.log("bin_data", bin_data);
 
-        var requestOptions = {
-          method: "POST",
-          body: bin_data,
-          redirect: "follow",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST",
-          },
-        };
+          var requestOptions = {
+            method: "POST",
+            body: bin_data,
+            redirect: "follow",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "POST",
+            },
+          };
 
-        fetch("https://www.aiteam.link:8100/upload_file", requestOptions)
-          .then((response) => response.json())
-          .then((result) => {
-            if (result.info === "fail") {
-              return console.log(result);
-            }
+          fetch("https://www.aiteam.link:8100/upload_file", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+              if (result.info === "fail") {
+                return console.log(result);
+              }
 
-            ToastDataSent.success(id);
-            props.setTestingProgressState(TestingProgress.DataSent);
-          })
-          .catch((error) => console.log("error", error));
-      });
-    });
+              ToastDataSent.success(id);
+              props.setTestingProgressState(TestingProgress.DataSent);
+            })
+            .catch((error) => {
+              console.log("error", error);
+            });
+        });
+      })
+      .catch((error) => {
+        ToastDataSent.error(id);
+        console.log("error", error);
+      });;
   }, 5000);
-
-  
 };
 export default ControlButtons;
