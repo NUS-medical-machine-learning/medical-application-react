@@ -130,26 +130,30 @@ export class SamplingState {
   static SamplingReady = new SamplingState();
 }
 
-// const checkIfSamplingReady = (data, isSamplingReady, setIsSamplingReady) => {
-//   switch (isSamplingReady) {
-//     case SamplingState.SamplingNew:
-//       if (data > 50) {
-//         setIsSamplingReady(SamplingState.SamplingAlmostReady);
-//       }
-//       break;
-//     case SamplingState.SamplingAlmostReady:
-//       if (data < 20) {
-//         setIsSamplingReady(SamplingState.SamplingReady);
-//       }
-//       break;
-//     default:
-//   }
-// };
+const checkIfSamplingReady = (data, isSamplingReady, setIsSamplingReady) => {
+  switch (isSamplingReady) {
+    case SamplingState.SamplingNew:
+      if (data > 0.00001) {
+        console.log("SamplingAlmostReady");
+        setIsSamplingReady(SamplingState.SamplingAlmostReady);
+      }
+      break;
+    case SamplingState.SamplingAlmostReady:
+      if (data < 0.001) {
+        console.log("SamplingReady");
+        setIsSamplingReady(SamplingState.SamplingReady);
+      }
+      break;
+    default:
+  }
+};
 
 const updateData = (
   chart,
   label,
   data,
+  isSamplingReady,
+  setIsSamplingReady
 ) => {
   if (chart.data.labels.length > 20) {
     // Render about 10 seconds
@@ -159,7 +163,7 @@ const updateData = (
 
   chart.update();
 
-  // checkIfSamplingReady(data, isSamplingReady, setIsSamplingReady);
+  checkIfSamplingReady(data, isSamplingReady, setIsSamplingReady);
 };
 
 export const renewData = (chart) => {
@@ -174,6 +178,8 @@ export default function BreathTimeSeriesContainer(props) {
 
   const chartRef = props.chartRef;
   const socket = props.socket;
+  const isSamplingReady = props.isSamplingReady;
+  const setIsSamplingReady = props.setIsSamplingReady;
 
   useEffect(() => {
     const chart = chartRef.current;
@@ -182,9 +188,15 @@ export default function BreathTimeSeriesContainer(props) {
     socket.on("detection", ({ data }) => {
       const unixTimestamp = data.scores[0][0][0];
       const date = new Date(unixTimestamp * 1000);
-      updateData(chart, date, data.scores[0][1][0]);
+      updateData(
+        chart,
+        date,
+        data.scores[0][1][0],
+        isSamplingReady,
+        setIsSamplingReady
+      );
     });
-  }, [socket, chartRef]);
+  }, [socket, chartRef, isSamplingReady, setIsSamplingReady]);
 
   return (
     <Line

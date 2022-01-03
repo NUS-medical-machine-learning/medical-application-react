@@ -19,7 +19,7 @@ import { handleBreatheStopSilent } from "./controlButtons";
 
 import { renewData } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContainer";
 
-// import { SamplingState } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContainer";
+import { SamplingState } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContainer";
 
 // import { subjectIdPrefix } from "./subjectIdInput";
 
@@ -39,7 +39,7 @@ function AnalysisConsole() {
 
   const [isLoadingMainButton, setIsLoadingMainButton] = useState(false);
 
-  // const [isSamplingReady, setIsSamplingReady] = useState(SamplingState.SamplingNew);
+  const [isSamplingReady, setIsSamplingReady] = useState(SamplingState.SamplingNew);
 
   const chartRef = useRef(null);
 
@@ -122,8 +122,8 @@ function AnalysisConsole() {
                 chartRef={chartRef}
                 socket={breatheSocket}
                 compoundDetectionSocket={compoundDetectionSocket}
-                // isSamplingReady={isSamplingReady}
-                // setIsSamplingReady={setIsSamplingReady}
+                isSamplingReady={isSamplingReady}
+                setIsSamplingReady={setIsSamplingReady}
               />
             </div>
           </div>
@@ -167,7 +167,7 @@ function AnalysisConsole() {
                   resetToNewProgress={resetToNewProgress}
                   isLoadingMainButton={isLoadingMainButton}
                   setIsLoadingMainButton={setIsLoadingMainButton}
-                  // isSamplingReady={isSamplingReady}
+                  isSamplingReady={isSamplingReady}
                 />
               </div>
             </div>

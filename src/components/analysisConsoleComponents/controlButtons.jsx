@@ -16,7 +16,7 @@ import {
 
 import { TestingProgress } from "./testing-progress.js";
 
-// import { SamplingState } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContainer";
+import { SamplingState } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContainer";
 
 function ControlButtons(props) {
   return (
@@ -55,9 +55,9 @@ function mainButton(props, handleBreatheStart) {
       btnOnClick = () => {
         handleBreatheStop(props);
       };
-      // props.setIsLoadingMainButton(
-      //   props.isSamplingReady !== SamplingState.SamplingReady
-      // );
+      props.setIsLoadingMainButton(
+        props.isSamplingReady !== SamplingState.SamplingReady
+      );
       break;
     case TestingProgress.AnalyzingStopped:
       btnStyle = "btn btn-outline-warning btn-lg shadow";
