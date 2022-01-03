@@ -101,7 +101,6 @@ const dataset = {
       data: [],
       borderColor: blueColor, //Blue
       backgroundColor: blueColorLighter,
-      tension: 0.4,
     },
     {
       label: "Breath Detection",
@@ -164,10 +163,10 @@ const updateData = (
 };
 
 export const renewData = (chart) => {
-  chart.data.labels = [];
-  chart.data.datasets[0].data = [];
-  chart.data.datasets[1].data = [];
-  chart.update();
+  while (chart.data.labels.length > 0) {
+    removeData(chart);
+    chart.update();
+  } 
 }
 
 export default function BreathTimeSeriesContainer(props) {

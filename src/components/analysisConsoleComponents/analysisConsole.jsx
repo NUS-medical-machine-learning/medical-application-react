@@ -53,6 +53,10 @@ function AnalysisConsole() {
 
   const resetSubjectId = () => setSubjectId(DEFAULT_SUBJECT_ID);
 
+  function refreshPage() {
+    window.location.reload(false);
+  }
+
   const resetToNewProgress = () => {
     resetSubjectId();
     setIsLoadingMainButton(false);
@@ -60,6 +64,8 @@ function AnalysisConsole() {
     handleBreatheStopSilent();
     setTestingProgressState(TestingProgress.New);
     renewData(chartRef.current);
+
+    // refreshPage();
   }
 
   useWindowUnloadEffect(() => {
