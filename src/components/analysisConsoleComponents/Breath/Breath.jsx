@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BreatheTimeSeriesContainer from "./TimeSeriesContainer/BreathTimeSeriesContainer";
 
-export default function Breathe({ socket, compoundDetectionSocket }) {
+export default function Breathe(props) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -17,12 +17,11 @@ export default function Breathe({ socket, compoundDetectionSocket }) {
   }, [windowWidth]);
 
   return (
-    <div className="col-lg-8">
-        <div className="bg-white shadow text-dark rounded p-3">
-        <BreatheTimeSeriesContainer
-          socket={compoundDetectionSocket}
-        />
-      </div>
-    </div>
+    <BreatheTimeSeriesContainer
+      chartRef={props.chartRef}
+      socket={props.compoundDetectionSocket}
+      isSamplingReady={props.isSamplingReady}
+      setIsSamplingReady={props.setIsSamplingReady}
+    />
   );
 }

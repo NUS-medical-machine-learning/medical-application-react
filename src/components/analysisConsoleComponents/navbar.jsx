@@ -1,53 +1,45 @@
-import React, { Component } from "react";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
+import Pneunostics from "../../resources/images/Pneunostic-Logo.svg";
+import ToggleButton from "react-bootstrap/ToggleButton";
 import firebase from "firebase/compat/app";
 
-class NavBar extends Component {
-  render() {
-    return (
-      <section className="">
-        <div className="container">
-          <header className="d-flex justify-content-center py-3 mb-4 border-bottom">
-            <a
-              href="/"
-              className="d-flex align-items-center mb-3 me-md-auto text-dark text-decoration-none"
-            >
-              <svg className="bi me-2" width={40} height={32}>
-                <use xlinkHref="#bootstrap" />
-              </svg>
-              <span className="fs-4">Analysis Console</span>
-            </a>
+function NavBar({darkMode, setDarkMode}) {
+  // const [checked, setChecked] = useState(false);
 
-            <span className="dropdown">
-              <button
-                className="btn btn-secondary dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton1"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Welcome {firebase.auth().currentUser.email}
-              </button>
-              <ul
-                className="dropdown-menu"
-                aria-labelledby="dropdownMenuButton1"
-              >
-                <li>
-                  <a
-                    className="dropdown-item"
-                    onClick={() => firebase.auth().signOut()}
-                    href="/login"
-                  >
-                    Sign out
-                  </a>
-                </li>
-              </ul>
-            </span>
-          </header>
+  return (
+    <div class="container">
+      <header class="row py-3 mb-4 border-bottom align-items-center">
+        <div className="col-2">
+          <a href="/#" class="me-auto">
+            <img src={Pneunostics} width="auto" height="85" alt="NUS Logo" />
+          </a>
         </div>
-      </section>
-    );
-  }
+
+        <div className="col ">
+          <a
+            className="btn btn-danger float-end ms-3"
+            onClick={() => firebase.auth().signOut()}
+            href="/login"
+          >
+            Sign Out
+          </a>
+
+          <ToggleButton
+            className="btn float-end"
+            id="toggle-check"
+            type="checkbox"
+            variant="outline-info"
+            checked={darkMode}
+            value="1"
+            onChange={(e) => setDarkMode(e.currentTarget.checked)}
+          >
+            Dark Mode
+          </ToggleButton>
+        </div>
+      </header>
+    </div>
+  );
 }
 
 export default NavBar;
