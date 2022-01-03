@@ -193,7 +193,7 @@ export default function BreathTimeSeriesContainer(props) {
         data.scores[0][1][0]
       );
     });
-  }, [socket, chartRef, isSamplingReady, setIsSamplingReady]);
+  }, [socket, chartRef]);
 
   useEffect(() => {
     const chart = chartRef.current;
