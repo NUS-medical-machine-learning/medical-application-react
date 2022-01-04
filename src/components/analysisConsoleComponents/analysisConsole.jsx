@@ -27,7 +27,7 @@ function AnalysisConsole() {
   const [breatheSocket] = useSocket(BREATH_INLET_ROOT_URL);
   const [compoundDetectionSocket] = useSocket(COMPOUND_DETECTION_ROOT_URL);
 
-  initialize(breatheSocket, compoundDetectionSocket);
+  console.log("AnalysisConsole called");
 
   const [darkMode, setDarkMode] = useState(false);
   const [subjectId, setSubjectId] = useState(DEFAULT_SUBJECT_ID);
@@ -180,74 +180,5 @@ const useWindowUnloadEffect = (handler, callOnCleanup) => {
     };
   }, [callOnCleanup]);
 };
-
-function initialize(breatheSocket, compoundDetectionSocket) {
-  console.log("initialize");
-  console.log("REACT_APP_SKIN_IN_USE", process.env.REACT_APP_SKIN_IN_USE);
-  if (process.env.REACT_APP_SKIN_IN_USE === "TRACK") {
-    breatheSocket.disconnect();
-    compoundDetectionSocket.disconnect();
-  } else if (process.env.REACT_APP_SKIN_IN_USE === "EXPLORE") {
-    breatheSocket.disconnect();
-    compoundDetectionSocket.disconnect();
-  } else if (
-    process.env.REACT_APP_SKIN_IN_USE === "BREATHE" ||
-    process.env.REACT_APP_SKIN_IN_USE === "BREATHE_RD"
-  ) {
-    console.log("BREATHE");
-  } else if (process.env.REACT_APP_SKIN_IN_USE === "MOBILE") {
-    breatheSocket.disconnect();
-    compoundDetectionSocket.disconnect();
-  }
-
-  useEffect(() => {
-    switch (process.env.REACT_APP_SKIN_IN_USE) {
-      case "BREATHE":
-        document.title = "VocusBREATHE";
-        break;
-      case "BREATHE_RD":
-        document.title = "VocusBREATHE";
-        break;
-      case "EXPLORE":
-        switch (process.env.REACT_APP_INSTRUMENT_IN_USE) {
-          case "VOCUS":
-            document.title = "VocusEXPLORE";
-            break;
-          case "EI":
-            document.title = "eiEXPLORE";
-            break;
-          case "PGA":
-            document.title = "pgaEXPLORE";
-            break;
-          default:
-            document.title = "TWebEXPLORE";
-            break;
-        }
-        break;
-      case "MOBILE":
-        document.title = "VocusMOBILE";
-        break;
-      case "TRACK":
-        switch (process.env.REACT_APP_INSTRUMENT_IN_USE) {
-          case "VOCUS":
-            document.title = "VocusTRACK";
-            break;
-          case "EI":
-            document.title = "eiTRACK";
-            break;
-          case "PGA":
-            document.title = "pgaTRACK";
-            break;
-          default:
-            document.title = "TWebTRACK";
-            break;
-        }
-        break;
-      default:
-        document.title = "TWeb Client";
-        break;
-    }
-  }, []);
-}
 
 export default AnalysisConsole;
