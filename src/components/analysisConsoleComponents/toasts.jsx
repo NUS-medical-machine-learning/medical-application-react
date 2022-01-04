@@ -1,9 +1,17 @@
 import React from "react";
 import { toast } from "react-toastify";
 
-export const ToastSubjectIdLocked = (subjectId) => {
-  return toast(toastBootstrap("Subject ID: " + subjectId + " Locked"));
+export const ToastSubjectIdLocked = (fullSubjectId) => {
+  return toast(
+    toastBootstrap("Following Subject ID is looked: " + fullSubjectId)
+  );
 }
+
+export const ToastSubjectIdInvalid = (fullSubjectId) => {
+  return toast.error(
+    toastBootstrap("Invalid Subject ID" + fullSubjectId)
+  );
+};
 
 export const ToastStart = {
   loading: function () {

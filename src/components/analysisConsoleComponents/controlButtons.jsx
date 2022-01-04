@@ -9,6 +9,7 @@ import {
   ToastStop,
   ToastSubjectIdLocked,
   ToastDataSent,
+  ToastSubjectIdInvalid,
 } from "./toasts";
 
 import moment from "moment";
@@ -76,6 +77,14 @@ function mainButton(props, startingTime, setStartingTime) {
   );
 }
 
+function isValidSubjectId(subjectId) {
+  if (subjectId.length < 6) {
+    return false;
+  }
+
+  return true;
+}
+
 function subjectIdButton(props) {
   let btnLabel = "";
   let btnOnClick = () => {};
@@ -83,8 +92,12 @@ function subjectIdButton(props) {
   switch (props.testingProgressState) {
     case TestingProgress.New:
       btnOnClick = () => {
-        props.setTestingProgressState(TestingProgress.SubjectIdReceived);
-        ToastSubjectIdLocked(props.subjectId);
+        if (isValidSubjectId(props.subjectId)) {
+          props.setTestingProgressState(TestingProgress.SubjectIdReceived);
+          ToastSubjectIdLocked(props.getFullSubjectId());
+        } else {
+          ToastSubjectIdInvalid(props.getFullSubjectId());
+        }
       };
       btnLabel = "Lock Subject ID";
       break;
@@ -277,7 +290,7 @@ const uploadDataToDummyServer = (props, startingTime) => {
           for (let value of recordData.values()) {
             console.log(value);
           }
-          
+
           fetch("http://127.0.0.1:8001/record", {
             method: "POST",
             body: recordData,
