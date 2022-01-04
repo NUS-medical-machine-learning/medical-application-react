@@ -43,9 +43,9 @@ function AnalysisConsole() {
     setSubjectId(event.target.value);
   };
 
-  // const getSubjectInfo = () => {
-  //   return subjectIdPrefix + subjectId;
-  // };
+  const getFullSubjectId = () => {
+    return subjectIdPrefix + subjectId;
+  };
 
   const resetSubjectId = () => setSubjectId(DEFAULT_SUBJECT_ID);
 
@@ -152,6 +152,7 @@ function AnalysisConsole() {
                   resetToNewProgress={resetToNewProgress}
                   isLoadingMainButton={isLoadingMainButton}
                   setIsLoadingMainButton={setIsLoadingMainButton}
+                  getFullSubjectId={getFullSubjectId}
                 />
               </div>
             </div>
