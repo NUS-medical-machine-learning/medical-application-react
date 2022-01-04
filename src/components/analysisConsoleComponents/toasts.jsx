@@ -2,7 +2,7 @@ import React from "react";
 import { toast } from "react-toastify";
 
 export const ToastSubjectIdLocked = (fullSubjectId) => {
-  return toast(
+  return toast.info(
     toastBootstrap("Subject ID is looked: \n" + fullSubjectId)
   );
 }

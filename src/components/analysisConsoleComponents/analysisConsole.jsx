@@ -1,10 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import NavBar from "./navbar";
-import useSocket from "../../helpers/Hooks/useSocket";
-import {
-  BREATH_INLET_ROOT_URL,
-  COMPOUND_DETECTION_ROOT_URL,
-} from "../../apiCalls/common";
 import ControlButtons from "./controlButtons";
 import SubjectIdInput from "./subjectIdInput";
 import Breathe from "./Breath/Breath";
@@ -23,11 +18,8 @@ import { subjectIdPrefix } from "./subjectIdInput";
 
 const DEFAULT_SUBJECT_ID = "";
 
-function AnalysisConsole() {
-  const [breatheSocket] = useSocket(BREATH_INLET_ROOT_URL);
-  const [compoundDetectionSocket] = useSocket(COMPOUND_DETECTION_ROOT_URL);
-
-  initialize(breatheSocket, compoundDetectionSocket);
+function AnalysisConsole(props) {
+  console.log("AnalysisConsole called");
 
   const [darkMode, setDarkMode] = useState(false);
   const [subjectId, setSubjectId] = useState(DEFAULT_SUBJECT_ID);
@@ -61,10 +53,10 @@ function AnalysisConsole() {
     renewData(chartRef.current);
 
     // refreshPage();
-  }
+  };
 
   useWindowUnloadEffect(() => {
-    console.log("unloaded");
+    console.log("reloaded");
     resetToNewProgress();
   }, true);
 
@@ -107,8 +99,7 @@ function AnalysisConsole() {
             <div class="card-body bg-tertiary">
               <Breathe
                 chartRef={chartRef}
-                socket={breatheSocket}
-                compoundDetectionSocket={compoundDetectionSocket}
+                compoundDetectionSocket={props.compoundDetectionSocket}
               />
             </div>
           </div>
@@ -180,25 +171,5 @@ const useWindowUnloadEffect = (handler, callOnCleanup) => {
     };
   }, [callOnCleanup]);
 };
-
-function initialize(breatheSocket, compoundDetectionSocket) {
-  console.log("initialize");
-  console.log("REACT_APP_SKIN_IN_USE", process.env.REACT_APP_SKIN_IN_USE);
-  if (process.env.REACT_APP_SKIN_IN_USE === "TRACK") {
-    breatheSocket.disconnect();
-    compoundDetectionSocket.disconnect();
-  } else if (process.env.REACT_APP_SKIN_IN_USE === "EXPLORE") {
-    breatheSocket.disconnect();
-    compoundDetectionSocket.disconnect();
-  } else if (
-    process.env.REACT_APP_SKIN_IN_USE === "BREATHE" ||
-    process.env.REACT_APP_SKIN_IN_USE === "BREATHE_RD"
-  ) {
-    console.log("BREATHE");
-  } else if (process.env.REACT_APP_SKIN_IN_USE === "MOBILE") {
-    breatheSocket.disconnect();
-    compoundDetectionSocket.disconnect();
-  }
-}
 
 export default AnalysisConsole;
