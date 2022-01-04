@@ -3,13 +3,13 @@ import { toast } from "react-toastify";
 
 export const ToastSubjectIdLocked = (fullSubjectId) => {
   return toast(
-    toastBootstrap("Subject ID is looked:  " + fullSubjectId)
+    toastBootstrap("Subject ID is looked: \n" + fullSubjectId)
   );
 }
 
 export const ToastSubjectIdInvalid = (fullSubjectId) => {
   return toast.error(
-    toastBootstrap("Invalid Subject ID:  " + fullSubjectId)
+    toastBootstrap("Invalid Subject ID: \n" + fullSubjectId)
   );
 };
 
