@@ -124,33 +124,6 @@ const removeData = (chart) => {
   });
 };
 
-export class SamplingState {
-  static SamplingNew = new SamplingState();
-  static SamplingAlmostReady = new SamplingState();
-  static SamplingReady = new SamplingState();
-}
-
-const checkIfSamplingReady = (chart, isSamplingReady, setIsSamplingReady) => {
-  let dataSet = chart.data.datasets[0].data;
-  let latestDataPoint = dataSet[dataSet.length - 1];
-
-  switch (isSamplingReady) {
-    case SamplingState.SamplingNew:
-      if (latestDataPoint > 0.00001) {
-        console.log("SamplingAlmostReady");
-        setIsSamplingReady(SamplingState.SamplingAlmostReady);
-      }
-      break;
-    case SamplingState.SamplingAlmostReady:
-      if (latestDataPoint < 0.001) {
-        console.log("SamplingReady");
-        setIsSamplingReady(SamplingState.SamplingReady);
-      }
-      break;
-    default:
-  }
-};
-
 const updateData = (
   chart,
   label,
@@ -177,8 +150,6 @@ export default function BreathTimeSeriesContainer(props) {
 
   const chartRef = props.chartRef;
   const socket = props.socket;
-  const isSamplingReady = props.isSamplingReady;
-  const setIsSamplingReady = props.setIsSamplingReady;
 
   useEffect(() => {
     const chart = chartRef.current;
@@ -194,13 +165,6 @@ export default function BreathTimeSeriesContainer(props) {
       );
     });
   }, [socket, chartRef]);
-
-  useEffect(() => {
-    const chart = chartRef.current;
-
-    console.log("Checking " + isSamplingReady);
-    checkIfSamplingReady(chart, isSamplingReady, setIsSamplingReady);
-  }, [chartRef, isSamplingReady, setIsSamplingReady]);
 
   return (
     <Line

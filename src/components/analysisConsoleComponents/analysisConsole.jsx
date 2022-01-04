@@ -19,8 +19,6 @@ import { handleBreatheStopSilent } from "./controlButtons";
 
 import { renewData } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContainer";
 
-import { SamplingState } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContainer";
-
 // import { subjectIdPrefix } from "./subjectIdInput";
 
 const DEFAULT_SUBJECT_ID = "";
@@ -38,8 +36,6 @@ function AnalysisConsole() {
   );
 
   const [isLoadingMainButton, setIsLoadingMainButton] = useState(false);
-
-  const [isSamplingReady, setIsSamplingReady] = useState(SamplingState.SamplingNew);
 
   const chartRef = useRef(null);
 
@@ -60,7 +56,6 @@ function AnalysisConsole() {
   const resetToNewProgress = () => {
     resetSubjectId();
     setIsLoadingMainButton(false);
-    // setIsSamplingReady(SamplingState.SamplingNew);
     handleBreatheStopSilent();
     setTestingProgressState(TestingProgress.New);
     renewData(chartRef.current);
@@ -72,14 +67,6 @@ function AnalysisConsole() {
     console.log("unloaded");
     resetToNewProgress();
   }, true);
-
-  // useEffect(() => {
-  //   return () => {
-  //     console.log("Unmount");
-  //     handleBreatheStop();
-  //     // Anything in here is fired on component unmount.
-  //   };
-  // }, []);
 
   let isDarkMode = darkMode ? "dark" : "";
 
@@ -122,8 +109,6 @@ function AnalysisConsole() {
                 chartRef={chartRef}
                 socket={breatheSocket}
                 compoundDetectionSocket={compoundDetectionSocket}
-                isSamplingReady={isSamplingReady}
-                setIsSamplingReady={setIsSamplingReady}
               />
             </div>
           </div>
@@ -167,7 +152,6 @@ function AnalysisConsole() {
                   resetToNewProgress={resetToNewProgress}
                   isLoadingMainButton={isLoadingMainButton}
                   setIsLoadingMainButton={setIsLoadingMainButton}
-                  isSamplingReady={isSamplingReady}
                 />
               </div>
             </div>
