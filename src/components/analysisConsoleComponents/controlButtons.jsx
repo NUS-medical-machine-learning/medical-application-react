@@ -235,7 +235,7 @@ const uploadDataToDummyServer = (props, startingTime) => {
   setTimeout(() => {
     let formData = new FormData();
     console.log("Current time", startingTime);
-    formData.append("time", "2022.01.02-16h52m39");
+    formData.append("time", startingTime);
 
     let bin_data = "";
 
