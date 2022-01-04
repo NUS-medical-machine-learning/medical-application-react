@@ -199,6 +199,55 @@ function initialize(breatheSocket, compoundDetectionSocket) {
     breatheSocket.disconnect();
     compoundDetectionSocket.disconnect();
   }
+
+  useEffect(() => {
+    switch (process.env.REACT_APP_SKIN_IN_USE) {
+      case "BREATHE":
+        document.title = "VocusBREATHE";
+        break;
+      case "BREATHE_RD":
+        document.title = "VocusBREATHE";
+        break;
+      case "EXPLORE":
+        switch (process.env.REACT_APP_INSTRUMENT_IN_USE) {
+          case "VOCUS":
+            document.title = "VocusEXPLORE";
+            break;
+          case "EI":
+            document.title = "eiEXPLORE";
+            break;
+          case "PGA":
+            document.title = "pgaEXPLORE";
+            break;
+          default:
+            document.title = "TWebEXPLORE";
+            break;
+        }
+        break;
+      case "MOBILE":
+        document.title = "VocusMOBILE";
+        break;
+      case "TRACK":
+        switch (process.env.REACT_APP_INSTRUMENT_IN_USE) {
+          case "VOCUS":
+            document.title = "VocusTRACK";
+            break;
+          case "EI":
+            document.title = "eiTRACK";
+            break;
+          case "PGA":
+            document.title = "pgaTRACK";
+            break;
+          default:
+            document.title = "TWebTRACK";
+            break;
+        }
+        break;
+      default:
+        document.title = "TWeb Client";
+        break;
+    }
+  }, []);
 }
 
 export default AnalysisConsole;
