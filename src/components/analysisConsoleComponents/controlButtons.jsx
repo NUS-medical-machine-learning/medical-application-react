@@ -11,10 +11,11 @@ import {
   ToastDataSent,
 } from "./toasts";
 
-// import request from "request";
-// import fs, { fchmodSync } from "fs";
+import moment from "moment";
 
 import { TestingProgress } from "./testing-progress.js";
+
+const TimeFormat = "YYYY.MM.DD-HH:mm:ss"
 
 function ControlButtons(props) {
   const [startingTime, setStartingTime] = useState("");
@@ -157,8 +158,7 @@ const handleBreatheStart = (props, setStartingTime) => {
       //   breathDispatch({ eventStatus: "true: waitingForKey" });
       ToastStart.success(id);
       props.setTestingProgressState(TestingProgress.AnalyzingStarted);
-      console.log(new Date().toLocaleTimeString());
-      setStartingTime(new Date().toLocaleTimeString());
+      setStartingTime(moment().format(TimeFormat));
     })
     .catch((err) => {
       console.log(err);
@@ -297,7 +297,11 @@ const uploadDataToDummyServer = (props, startingTime) => {
       },
     })
       .then((response) => {
-        console.log(response);
+        return response.json();
+      })
+      .then(function (data) {
+        // `data` is the parsed version of the JSON returned from the above endpoint.
+        console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
       })
       .catch((error) => {
         ToastDataSent.error(id);
