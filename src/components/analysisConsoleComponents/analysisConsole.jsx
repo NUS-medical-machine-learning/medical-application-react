@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import NavBar from "./navbar";
-import useSocket from "../../helpers/Hooks/useSocket";
+// import useSocket from "../../helpers/Hooks/useSocket";
 import {
-  BREATH_INLET_ROOT_URL,
   COMPOUND_DETECTION_ROOT_URL,
 } from "../../apiCalls/common";
 import ControlButtons from "./controlButtons";
@@ -21,13 +20,26 @@ import { renewData } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContaine
 
 import { subjectIdPrefix } from "./subjectIdInput";
 
+import { io } from "socket.io-client";
+
 const DEFAULT_SUBJECT_ID = "";
 
 function AnalysisConsole() {
-  const [breatheSocket] = useSocket(BREATH_INLET_ROOT_URL);
-  const [compoundDetectionSocket] = useSocket(COMPOUND_DETECTION_ROOT_URL);
-
   console.log("AnalysisConsole called");
+
+  // const [compoundDetectionSocket] = useSocket(COMPOUND_DETECTION_ROOT_URL);
+
+  const compoundDetectionSocket = useRef(io(COMPOUND_DETECTION_ROOT_URL)).current;
+
+  useEffect(() => {
+    const socket = compoundDetectionSocket.current;
+
+    return () => {
+      console.log("socket disconnect")
+      socket && socket.removeAllListeners();
+      socket && socket.close();
+    };
+  }, [compoundDetectionSocket]);
 
   const [darkMode, setDarkMode] = useState(false);
   const [subjectId, setSubjectId] = useState(DEFAULT_SUBJECT_ID);
@@ -107,7 +119,6 @@ function AnalysisConsole() {
             <div class="card-body bg-tertiary">
               <Breathe
                 chartRef={chartRef}
-                socket={breatheSocket}
                 compoundDetectionSocket={compoundDetectionSocket}
               />
             </div>
