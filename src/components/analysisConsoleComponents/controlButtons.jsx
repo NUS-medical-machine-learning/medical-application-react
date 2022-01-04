@@ -273,8 +273,11 @@ const uploadDataToDummyServer = (props, startingTime) => {
           let recordData = new FormData();
           recordData.append("id", props.getFullSubjectId());
           recordData.append("time", startingTime);
-          console.log("recordData", recordData.values());
 
+          for (let value of recordData.values()) {
+            console.log(value);
+          }
+          
           fetch("http://127.0.0.1:8001/record", {
             method: "POST",
             body: recordData,
