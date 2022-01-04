@@ -15,7 +15,7 @@ import moment from "moment";
 
 import { TestingProgress } from "./testing-progress.js";
 
-const TimeFormat = "YYYY.MM.DD-HH:mm:ss"
+const TimeFormat = "YYYY.MM.DD-HH:mm:ss";
 
 function ControlButtons(props) {
   const [startingTime, setStartingTime] = useState("");
@@ -268,40 +268,27 @@ const uploadDataToDummyServer = (props, startingTime) => {
               if (result.info === "fail") {
                 return console.log(result);
               }
-
-              ToastDataSent.success(id);
-              props.setTestingProgressState(TestingProgress.DataSent);
-            })
-            .catch((error) => {
-              console.log("error", error);
             });
+
+          let recordData = new FormData();
+          recordData.append("id", "testid");
+          recordData.append("time", startingTime);
+
+          fetch("http://127.0.0.1:8001/record", {
+            method: "POST",
+            body: recordData,
+            redirect: "follow",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "POST",
+            },
+          })
+            .then((response) => response.text())
+            .then((result) => console.log(result));
+
+          ToastDataSent.success(id);
+          props.setTestingProgressState(TestingProgress.DataSent);
         });
-      })
-      .catch((error) => {
-        ToastDataSent.error(id);
-        console.log("error", error);
-      });
-
-    
-    let recordData = new FormData();
-    recordData.append("id", "testid");
-    recordData.append("time", startingTime);
-
-    fetch("http://127.0.0.1:8001/record", {
-      method: "POST",
-      body: recordData,
-      redirect: "follow",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST",
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then(function (data) {
-        // `data` is the parsed version of the JSON returned from the above endpoint.
-        console.log(data); // { "userId": 1, "id": 1, "title": "...", "body": "..." }
       })
       .catch((error) => {
         ToastDataSent.error(id);
