@@ -182,6 +182,8 @@ const useWindowUnloadEffect = (handler, callOnCleanup) => {
 };
 
 function initialize(breatheSocket, compoundDetectionSocket) {
+  console.log("initialize");
+  console.log("REACT_APP_SKIN_IN_USE", process.env.REACT_APP_SKIN_IN_USE);
   if (process.env.REACT_APP_SKIN_IN_USE === "TRACK") {
     breatheSocket.disconnect();
     compoundDetectionSocket.disconnect();
