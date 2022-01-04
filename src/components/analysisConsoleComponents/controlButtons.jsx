@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BREATH_INLET_SERVICE_URL,
   COMPOUND_DETECTION_SERVICE_URL,
@@ -17,15 +17,17 @@ import {
 import { TestingProgress } from "./testing-progress.js";
 
 function ControlButtons(props) {
+  const [startingTime, setStartingTime] = useState("");
+
   return (
     <div className="d-grid gap-2">
-      {mainButton(props, handleBreatheStart)}
+      {mainButton(props, startingTime, setStartingTime)}
       {subjectIdButton(props)}
     </div>
   );
 }
 
-function mainButton(props, handleBreatheStart) {
+function mainButton(props, startingTime, setStartingTime) {
   let btnStyle = "";
   let btnName = "";
   let isDisable = false;
@@ -36,22 +38,19 @@ function mainButton(props, handleBreatheStart) {
       btnStyle = "btn btn-outline-success btn-lg shadow";
       btnName = "Start Sampling";
       isDisable = true;
-      btnOnClick = () => {
-        handleBreatheStart(props);
-      };
       break;
     case TestingProgress.SubjectIdReceived:
       btnStyle = "btn btn-outline-success btn-lg shadow";
       btnName = "Start Sampling";
       btnOnClick = () => {
-        handleBreatheStart(props);
+        handleBreatheStart(props, setStartingTime);
       };
       break;
     case TestingProgress.AnalyzingStarted:
       btnStyle = "btn btn-outline-danger btn-lg shadow";
       btnName = "Stop Sampling";
       btnOnClick = () => {
-        handleBreatheStop(props);
+        handleBreatheStop(props, startingTime);
       };
       break;
     case TestingProgress.AnalyzingStopped:
@@ -137,7 +136,7 @@ const postStartStopBreathe = (action) => {
   });
 };
 
-const handleBreatheStart = (props) => {
+const handleBreatheStart = (props, setStartingTime) => {
   //   breathDispatch({ eventStatus: "Start isLoading" });
   const id = ToastStart.loading();
   props.setIsLoadingMainButton(true);
@@ -158,21 +157,19 @@ const handleBreatheStart = (props) => {
       //   breathDispatch({ eventStatus: "true: waitingForKey" });
       ToastStart.success(id);
       props.setTestingProgressState(TestingProgress.AnalyzingStarted);
+      console.log(new Date().toLocaleTimeString());
+      setStartingTime(new Date().toLocaleTimeString());
     })
     .catch((err) => {
       console.log(err);
-      setTimeout(() => {
-        ToastStart.error(id);
-      }, 2000);
+      ToastStart.error(id);
     })
     .finally(() => {
-      setTimeout(() => {
-        props.setIsLoadingMainButton(false);
-      }, 2000);
+      props.setIsLoadingMainButton(false);
     });
 };
 
-const handleBreatheStop = (props) => {
+const handleBreatheStop = (props, startingTime) => {
   //   breathDispatch({ eventStatus: "Stop isLoading" });
   const id = ToastStop.loading();
   props.setIsLoadingMainButton(true);
@@ -196,7 +193,7 @@ const handleBreatheStop = (props) => {
       ToastStop.success(id);
       props.setTestingProgressState(TestingProgress.AnalyzingStopped);
 
-      uploadDataToDummyServer(props);
+      uploadDataToDummyServer(props, startingTime);
     })
     .catch((err) => {
       console.log(err.message);
@@ -232,13 +229,17 @@ export const handleBreatheStopSilent = () => {
     });
 };
 
-const uploadDataToDummyServer = (props) => {
+const uploadDataToDummyServer = (props, startingTime) => {
   const id = ToastDataSent.loading();
 
   setTimeout(() => {
     let formData = new FormData();
+    console.log("Current time", startingTime);
     formData.append("time", "2022.01.02-16h52m39");
-    var requestOptions0 = {
+
+    let bin_data = "";
+
+    fetch("http://localhost:8001/getfile", {
       method: "POST",
       body: formData,
       redirect: "follow",
@@ -246,18 +247,14 @@ const uploadDataToDummyServer = (props) => {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "POST",
       },
-    };
-
-    let bin_data = "";
-
-    fetch("http://localhost:8001/getfile", requestOptions0)
+    })
       .then((response) => {
         response.arrayBuffer().then((buffer) => {
           bin_data = buffer;
 
           console.log("bin_data", bin_data);
 
-          var requestOptions = {
+          fetch("https://www.aiteam.link:8100/upload_file", {
             method: "POST",
             body: bin_data,
             redirect: "follow",
@@ -265,9 +262,7 @@ const uploadDataToDummyServer = (props) => {
               "Access-Control-Allow-Origin": "*",
               "Access-Control-Allow-Methods": "POST",
             },
-          };
-
-          fetch("https://www.aiteam.link:8100/upload_file", requestOptions)
+          })
             .then((response) => response.json())
             .then((result) => {
               if (result.info === "fail") {
@@ -285,7 +280,29 @@ const uploadDataToDummyServer = (props) => {
       .catch((error) => {
         ToastDataSent.error(id);
         console.log("error", error);
-      });;
+      });
+
+    
+    let recordData = new FormData();
+    recordData.append("id", "testid");
+    recordData.append("time", startingTime);
+
+    fetch("http://127.0.0.1:8001/record", {
+      method: "POST",
+      body: recordData,
+      redirect: "follow",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST",
+      },
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        ToastDataSent.error(id);
+        console.log("error", error);
+      });
   }, 5000);
 };
 export default ControlButtons;
