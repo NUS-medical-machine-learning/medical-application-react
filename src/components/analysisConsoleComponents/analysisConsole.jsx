@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import NavBar from "./navbar";
-// import useSocket from "../../helpers/Hooks/useSocket";
-import {
-  COMPOUND_DETECTION_ROOT_URL,
-} from "../../apiCalls/common";
 import ControlButtons from "./controlButtons";
 import SubjectIdInput from "./subjectIdInput";
 import Breathe from "./Breath/Breath";
@@ -20,26 +16,10 @@ import { renewData } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContaine
 
 import { subjectIdPrefix } from "./subjectIdInput";
 
-import { io } from "socket.io-client";
-
 const DEFAULT_SUBJECT_ID = "";
 
-function AnalysisConsole() {
+function AnalysisConsole(props) {
   console.log("AnalysisConsole called");
-
-  // const [compoundDetectionSocket] = useSocket(COMPOUND_DETECTION_ROOT_URL);
-
-  const compoundDetectionSocket = useRef(io(COMPOUND_DETECTION_ROOT_URL)).current;
-
-  useEffect(() => {
-    const socket = compoundDetectionSocket.current;
-
-    return () => {
-      console.log("socket disconnect")
-      socket && socket.removeAllListeners();
-      socket && socket.close();
-    };
-  }, [compoundDetectionSocket]);
 
   const [darkMode, setDarkMode] = useState(false);
   const [subjectId, setSubjectId] = useState(DEFAULT_SUBJECT_ID);
@@ -73,7 +53,7 @@ function AnalysisConsole() {
     renewData(chartRef.current);
 
     // refreshPage();
-  }
+  };
 
   useWindowUnloadEffect(() => {
     console.log("unloaded");
@@ -119,7 +99,7 @@ function AnalysisConsole() {
             <div class="card-body bg-tertiary">
               <Breathe
                 chartRef={chartRef}
-                compoundDetectionSocket={compoundDetectionSocket}
+                compoundDetectionSocket={props.compoundDetectionSocket}
               />
             </div>
           </div>

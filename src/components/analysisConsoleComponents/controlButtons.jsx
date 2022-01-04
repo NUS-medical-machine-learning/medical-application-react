@@ -18,17 +18,6 @@ import { TestingProgress } from "./testing-progress.js";
 
 const TimeFormat = "YYYY.MM.DD-HH:mm:ss";
 
-function ControlButtons(props) {
-  const [startingTime, setStartingTime] = useState("");
-
-  return (
-    <div className="d-grid gap-2">
-      {mainButton(props, startingTime, setStartingTime)}
-      {subjectIdButton(props)}
-    </div>
-  );
-}
-
 function mainButton(props, startingTime, setStartingTime) {
   let btnStyle = "";
   let btnName = "";
@@ -313,4 +302,16 @@ const uploadDataToDummyServer = (props, startingTime) => {
       });
   }, 5000);
 };
+
+function ControlButtons(props) {
+  const [startingTime, setStartingTime] = useState("");
+
+  return (
+    <div className="d-grid gap-2">
+      {mainButton(props, startingTime, setStartingTime)}
+      {subjectIdButton(props)}
+    </div>
+  );
+}
+
 export default ControlButtons;
