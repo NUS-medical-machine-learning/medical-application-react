@@ -56,7 +56,7 @@ function AnalysisConsole(props) {
   };
 
   useWindowUnloadEffect(() => {
-    console.log("unloaded");
+    console.log("reloaded");
     resetToNewProgress();
   }, true);
 
