@@ -16,6 +16,8 @@ import { renewData } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContaine
 
 import { subjectIdPrefix } from "./subjectIdInput";
 
+import ModalResult from "./modalResult";
+
 const DEFAULT_SUBJECT_ID = "";
 
 function AnalysisConsole(props) {
@@ -27,7 +29,16 @@ function AnalysisConsole(props) {
     TestingProgress.New
   );
 
+  useEffect(() => {
+    console.log("Testing Progress State", testingProgressState.progressName);
+  }, [testingProgressState]);
+
   const [isLoadingMainButton, setIsLoadingMainButton] = useState(false);
+
+  const [showModalResult, setShowModalResult] = useState(false);
+  const [currentModalResultType, setCurrentModalResultType] = useState(
+    null
+  );
 
   const chartRef = useRef(null);
 
@@ -50,6 +61,7 @@ function AnalysisConsole(props) {
     setIsLoadingMainButton(false);
     handleBreatheStopSilent();
     setTestingProgressState(TestingProgress.New);
+    setShowModalResult(false);
     renewData(chartRef.current);
 
     // refreshPage();
@@ -83,6 +95,17 @@ function AnalysisConsole(props) {
           transition={Slide}
         />
       </div>
+
+      <section className="">
+        <ModalResult
+          showModalResult={showModalResult}
+          setShowModalResult={setShowModalResult}
+          currentModalResultType={currentModalResultType}
+          getFullSubjectId={getFullSubjectId}
+          resetToNewProgress={resetToNewProgress}
+        />
+      </section>
+
       <section className="">
         <NavBar darkMode={darkMode} setDarkMode={(bool) => setDarkMode(bool)} />
       </section>
@@ -144,6 +167,8 @@ function AnalysisConsole(props) {
                   isLoadingMainButton={isLoadingMainButton}
                   setIsLoadingMainButton={setIsLoadingMainButton}
                   getFullSubjectId={getFullSubjectId}
+                  setShowModalResult={setShowModalResult}
+                  setCurrentModalResultType={setCurrentModalResultType}
                 />
               </div>
             </div>

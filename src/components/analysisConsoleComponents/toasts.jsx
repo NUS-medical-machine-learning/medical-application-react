@@ -7,9 +7,9 @@ export const ToastSubjectIdLocked = (fullSubjectId) => {
   );
 }
 
-export const ToastSubjectIdInvalid = (fullSubjectId) => {
+export const ToastSubjectIdInvalid = () => {
   return toast.error(
-    toastBootstrap("Invalid Subject ID: \n" + fullSubjectId)
+    toastBootstrap("Invalid Subject ID!")
   );
 };
 

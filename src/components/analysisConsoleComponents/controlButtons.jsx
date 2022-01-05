@@ -16,6 +16,8 @@ import moment from "moment";
 
 import { TestingProgress } from "./testing-progress.js";
 
+import { ModalResultPopUp, ModalResultType } from "./modalResult";
+
 const TimeFormat = "YYYY.MM.DD-HH:mm:ss";
 
 function mainButton(props, startingTime, setStartingTime) {
@@ -85,7 +87,7 @@ function subjectIdButton(props) {
           props.setTestingProgressState(TestingProgress.SubjectIdReceived);
           ToastSubjectIdLocked(props.getFullSubjectId());
         } else {
-          ToastSubjectIdInvalid(props.getFullSubjectId());
+          ToastSubjectIdInvalid();
         }
       };
       btnLabel = "Lock Subject ID";
@@ -294,6 +296,7 @@ const uploadDataToDummyServer = (props, startingTime) => {
 
           ToastDataSent.success(id);
           props.setTestingProgressState(TestingProgress.DataSent);
+          ModalResultPopUp(props, ModalResultType.NEGATIVE);
         });
       })
       .catch((error) => {
