@@ -57,7 +57,7 @@ const options = {
       labels: {
         // This more specific font property overrides the global property
         font: {
-          size: 18,
+          size: 16,
         },
       },
     },
