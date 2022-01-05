@@ -302,6 +302,7 @@ const uploadDataToDummyServer = (props, startingTime) => {
 
           ToastDataSent.success(id);
           props.setTestingProgressState(TestingProgress.DataSent);
+          PopUpResult(props);
         });
       })
       .catch((error) => {
