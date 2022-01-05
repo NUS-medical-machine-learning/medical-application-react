@@ -54,6 +54,12 @@ function mainButton(props, startingTime, setStartingTime) {
     case TestingProgress.DataSent:
       btnStyle = "btn btn-outline-warning btn-lg shadow";
       btnName = "Waiting for result";
+      isDisable = true;
+      break;
+    case TestingProgress.DataSent:
+      btnStyle = "btn btn-success btn-lg shadow";
+      btnName = "Sampling Completed";
+      isDisable = true;
       break;
     default:
     // code block
@@ -296,13 +302,19 @@ const uploadDataToDummyServer = (props, startingTime) => {
 
           ToastDataSent.success(id);
           props.setTestingProgressState(TestingProgress.DataSent);
-          ModalResultPopUp(props, ModalResultType.NEGATIVE);
         });
       })
       .catch((error) => {
         ToastDataSent.error(id);
         console.log("error", error);
       });
+  }, 5000);
+};
+
+const PopUpResult = (props) => {
+  setTimeout(() => {
+    props.setTestingProgressState(TestingProgress.Finished);
+    ModalResultPopUp(props, ModalResultType.NEGATIVE);
   }, 5000);
 };
 
