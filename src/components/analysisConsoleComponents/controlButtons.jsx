@@ -56,7 +56,7 @@ function mainButton(props, startingTime, setStartingTime) {
       btnName = "Waiting for result";
       isDisable = true;
       break;
-    case TestingProgress.DataSent:
+    case TestingProgress.Finished:
       btnStyle = "btn btn-success btn-lg shadow";
       btnName = "Sampling Completed";
       isDisable = true;
@@ -92,6 +92,8 @@ function subjectIdButton(props) {
         if (isValidSubjectId(props.subjectId)) {
           props.setTestingProgressState(TestingProgress.SubjectIdReceived);
           ToastSubjectIdLocked(props.getFullSubjectId());
+
+          ModalResultPopUp(props, ModalResultType.NEGATIVE);
         } else {
           ToastSubjectIdInvalid();
         }

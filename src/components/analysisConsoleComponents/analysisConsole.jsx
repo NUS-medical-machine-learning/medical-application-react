@@ -111,12 +111,14 @@ function AnalysisConsole(props) {
       </section>
 
       <section className="">
-        <div class="container p-5">
+        <div class="container py-1 px-5">
           <div class="card shadow rounded">
             <div class="card-header p-3 bg-supporting">
-              Operator Workstation for{" "}
-              <span class="fw-bold text-uppercase">
-                {firebase.auth().currentUser.email}
+              <span class="fs-5">
+                Operator Workstation for{" "}
+                <span class="fw-bold text-uppercase">
+                  {firebase.auth().currentUser.email}
+                </span>
               </span>
             </div>
             <div class="card-body bg-tertiary">
@@ -130,7 +132,7 @@ function AnalysisConsole(props) {
       </section>
 
       <section className="">
-        <div className="container p-5">
+        <div className="container py-3 px-5">
           <div className="">
             <div className="row">
               <div className="col-9">
@@ -146,7 +148,9 @@ function AnalysisConsole(props) {
                       >
                         <use xlinkHref="#info-fill" />
                       </svg>
-                      <span class="align-middle">SUBJECT INFO</span>
+                      <span class="align-middle">
+                        <span class="fs-5">SUBJECT INFO</span>
+                      </span>
                     </div>
                     <div class="card-body bg-tertiary">
                       <SubjectIdInput

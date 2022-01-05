@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import "chartjs-adapter-moment";
 
-
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,7 +11,7 @@ import {
   Tooltip,
   Legend,
   TimeScale,
-  TimeSeriesScale
+  TimeSeriesScale,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
@@ -53,10 +52,14 @@ const options = {
   plugins: {
     legend: {
       position: "top",
-    },
-    title: {
+
       display: true,
-      color: blueColor,
+      labels: {
+        // This more specific font property overrides the global property
+        font: {
+          size: 18,
+        },
+      },
     },
     chartAreaBorder: {
       borderColor: blueColor,
@@ -74,6 +77,9 @@ const options = {
       title: {
         display: true,
         text: "Time",
+        font: {
+          size: 16,
+        },
       },
       ticks: {
         autoSkip: false,
@@ -81,17 +87,23 @@ const options = {
         major: {
           enabled: true,
         },
+        font: {
+          size: 16,
+        },
       },
     },
     y: {
       // the data maximum used for determining the ticks is Math.max(dataMax, suggestedMax)
       suggestedMax: 30,
       suggestedMin: -2,
+      ticks: {
+        font: {
+          size: 16,
+        },
+      },
     },
   },
 };
-
-
 
 const dataset = {
   labels: [],
@@ -124,11 +136,7 @@ const removeData = (chart) => {
   });
 };
 
-const updateData = (
-  chart,
-  label,
-  data,
-) => {
+const updateData = (chart, label, data) => {
   if (chart.data.labels.length > 20) {
     // Render about 10 seconds
     removeData(chart);
@@ -141,9 +149,9 @@ const updateData = (
 export const renewData = (chart) => {
   while (chart.data.labels.length > 0) {
     removeData(chart);
-  } 
+  }
   chart.update();
-}
+};
 
 export default function BreathTimeSeriesContainer(props) {
   // const chartRef = useRef(null);
@@ -158,11 +166,7 @@ export default function BreathTimeSeriesContainer(props) {
     socket.on("detection", ({ data }) => {
       const unixTimestamp = data.scores[0][0][0];
       const date = new Date(unixTimestamp * 1000);
-      updateData(
-        chart,
-        date,
-        data.scores[0][1][0]
-      );
+      updateData(chart, date, data.scores[0][1][0]);
     });
   }, [socket, chartRef]);
 
@@ -172,6 +176,7 @@ export default function BreathTimeSeriesContainer(props) {
       ref={chartRef}
       options={options}
       data={dataset}
+      height={"100px"}
       plugins={[chartAreaBorder]}
     />
   );

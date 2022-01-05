@@ -9,7 +9,7 @@ function NavBar({darkMode, setDarkMode}) {
 
   return (
     <div class="container">
-      <header class="row py-3 mb-4 border-bottom align-items-center">
+      <header class="row py-1 mb-4 border-bottom align-items-center">
         <div className="col-2">
           <a href="/#" class="me-auto">
             <img src={Pneunostics} width="auto" height="85" alt="NUS Logo" />
