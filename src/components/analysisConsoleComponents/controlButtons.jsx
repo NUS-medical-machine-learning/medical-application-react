@@ -92,8 +92,6 @@ function subjectIdButton(props) {
         if (isValidSubjectId(props.subjectId)) {
           props.setTestingProgressState(TestingProgress.SubjectIdReceived);
           ToastSubjectIdLocked(props.getFullSubjectId());
-
-          ModalResultPopUp(props, ModalResultType.NEGATIVE);
         } else {
           ToastSubjectIdInvalid();
         }

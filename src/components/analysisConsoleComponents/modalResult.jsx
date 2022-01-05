@@ -2,6 +2,8 @@ import React from "react";
 
 import Modal from "react-bootstrap/Modal";
 import Badge from "react-bootstrap/Badge";
+import Stack from "react-bootstrap/Stack";
+
 
 const handleClose = (props) => () => props.setShowModalResult(false);
 const handleShow = (props) => () => props.setShowModalResult(true);
@@ -19,57 +21,38 @@ export const ModalResultPopUp = (props, modalResultType) => {
 
 function ModalResult(props) {
   let fullSubjectId = props.getFullSubjectId();
-  let title = "";
-  let message;
+  let title;
   switch (props.currentModalResultType) {
     case ModalResultType.NEGATIVE:
-      title = "NEGATIVE";
-      message = (
+      title = (
         <div>
-          <div>
-            Congratulations to subject ID:{" "}
-            <Badge pill bg="light" text="dark">
-              {fullSubjectId}
-            </Badge>
-            !
-          </div>
-          <div>
-            Your COVID-19 test result is <Badge bg="success">NEGATIVE</Badge>
-          </div>
+          Result
+          <Badge pill bg="light" text="dark">
+            {fullSubjectId}
+          </Badge>
+          : <Badge bg="success">NEGATIVE</Badge>
         </div>
       );
       break;
     case ModalResultType.POSITIVE:
-      title = "POSITIVE";
-      message = (
+      title = (
         <div>
-          <div>
-            We are regret to inform subject ID:{" "}
-            <Badge pill bg="light" text="dark">
-              {fullSubjectId}
-            </Badge>
-            that:
-          </div>
-          <div>
-            Your COVID-19 test result is <Badge bg="danger">POSITIVE</Badge>
-          </div>
+          Result
+          <Badge pill bg="light" text="dark">
+            {fullSubjectId}
+          </Badge>
+          : <Badge bg="danger">POSITIVE</Badge>
         </div>
       );
       break;
     case ModalResultType.INVALID:
-      title = "INVALID";
-      message = (
+      title = (
         <div>
-          <div>
-            We are regret to inform subject ID:{" "}
-            <Badge pill bg="light" text="dark">
-              {fullSubjectId}
-            </Badge>
-            that:
-          </div>
-          <div>
-            Your COVID-19 test result is <Badge bg="warning">INVALID</Badge>
-          </div>
+          Result
+          <Badge pill bg="light" text="dark">
+            {fullSubjectId}
+          </Badge>
+          : <Badge bg="warning">INVALID</Badge>
         </div>
       );
       break;
@@ -88,7 +71,6 @@ function ModalResult(props) {
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{message}</Modal.Body>
         <Modal.Footer>
           <button
             onClick={props.resetToNewProgress}
