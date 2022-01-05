@@ -2,8 +2,6 @@ import React from "react";
 
 import Modal from "react-bootstrap/Modal";
 import Badge from "react-bootstrap/Badge";
-import Stack from "react-bootstrap/Stack";
-
 
 const handleClose = (props) => () => props.setShowModalResult(false);
 const handleShow = (props) => () => props.setShowModalResult(true);
