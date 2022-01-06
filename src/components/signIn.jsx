@@ -56,7 +56,7 @@ function SignInScreen() {
               class=""
               width="190"
               height="auto"
-              alt="NUS Logo"
+              alt="Pneunostics Logo"
             />
           </div>
 

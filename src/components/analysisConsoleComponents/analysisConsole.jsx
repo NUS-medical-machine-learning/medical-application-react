@@ -16,6 +16,8 @@ import { renewData } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContaine
 
 import { subjectIdPrefix } from "./subjectIdInput";
 
+import ModalResult from "./modalResult";
+
 const DEFAULT_SUBJECT_ID = "";
 
 function AnalysisConsole(props) {
@@ -27,7 +29,16 @@ function AnalysisConsole(props) {
     TestingProgress.New
   );
 
+  useEffect(() => {
+    console.log("Testing Progress State", testingProgressState.progressName);
+  }, [testingProgressState]);
+
   const [isLoadingMainButton, setIsLoadingMainButton] = useState(false);
+
+  const [showModalResult, setShowModalResult] = useState(false);
+  const [currentModalResultType, setCurrentModalResultType] = useState(
+    null
+  );
 
   const chartRef = useRef(null);
 
@@ -50,6 +61,7 @@ function AnalysisConsole(props) {
     setIsLoadingMainButton(false);
     handleBreatheStopSilent();
     setTestingProgressState(TestingProgress.New);
+    setShowModalResult(false);
     renewData(chartRef.current);
 
     // refreshPage();
@@ -83,17 +95,30 @@ function AnalysisConsole(props) {
           transition={Slide}
         />
       </div>
+
+      <section className="">
+        <ModalResult
+          showModalResult={showModalResult}
+          setShowModalResult={setShowModalResult}
+          currentModalResultType={currentModalResultType}
+          getFullSubjectId={getFullSubjectId}
+          resetToNewProgress={resetToNewProgress}
+        />
+      </section>
+
       <section className="">
         <NavBar darkMode={darkMode} setDarkMode={(bool) => setDarkMode(bool)} />
       </section>
 
       <section className="">
-        <div class="container p-5">
+        <div class="container py-1 px-5">
           <div class="card shadow rounded">
             <div class="card-header p-3 bg-supporting">
-              Operator Workstation for{" "}
-              <span class="fw-bold text-uppercase">
-                {firebase.auth().currentUser.email}
+              <span class="fs-5">
+                Operator Workstation for{" "}
+                <span class="fw-bold text-uppercase">
+                  {firebase.auth().currentUser.email}
+                </span>
               </span>
             </div>
             <div class="card-body bg-tertiary">
@@ -107,7 +132,7 @@ function AnalysisConsole(props) {
       </section>
 
       <section className="">
-        <div className="container p-5">
+        <div className="container py-3 px-5">
           <div className="">
             <div className="row">
               <div className="col-9">
@@ -123,7 +148,9 @@ function AnalysisConsole(props) {
                       >
                         <use xlinkHref="#info-fill" />
                       </svg>
-                      <span class="align-middle">SUBJECT INFO</span>
+                      <span class="align-middle">
+                        <span class="fs-5">SUBJECT INFO</span>
+                      </span>
                     </div>
                     <div class="card-body bg-tertiary">
                       <SubjectIdInput
@@ -144,6 +171,8 @@ function AnalysisConsole(props) {
                   isLoadingMainButton={isLoadingMainButton}
                   setIsLoadingMainButton={setIsLoadingMainButton}
                   getFullSubjectId={getFullSubjectId}
+                  setShowModalResult={setShowModalResult}
+                  setCurrentModalResultType={setCurrentModalResultType}
                 />
               </div>
             </div>
