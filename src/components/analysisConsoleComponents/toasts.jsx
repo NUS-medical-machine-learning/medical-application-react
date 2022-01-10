@@ -19,7 +19,7 @@ export const ToastStart = {
   },
   success: function (id) {
     return toast.update(id, {
-      render: toastBootstrap("Sampling started👌"),
+      render: toastBootstrap("Sampling started"),
       type: "success",
       isLoading: false,
       ...toastConfig,
@@ -27,7 +27,7 @@ export const ToastStart = {
   },
   error: function (id) {
     return toast.update(id, {
-      render: toastBootstrap("Fail to start 🤯"),
+      render: toastBootstrap("Fail to start"),
       type: "error",
       isLoading: false,
       ...toastConfig,
@@ -41,7 +41,7 @@ export const ToastStop = {
   },
   success: function (id) {
     return toast.update(id, {
-      render: toastBootstrap("Sampling stopped👌"),
+      render: toastBootstrap("Sampling stopped"),
       type: "info",
       isLoading: false,
       ...toastConfig,
@@ -49,7 +49,7 @@ export const ToastStop = {
   },
   error: function (id) {
     return toast.update(id, {
-      render: toastBootstrap("Fail to stop 🤯"),
+      render: toastBootstrap("Fail to stop"),
       type: "error",
       isLoading: false,
       ...toastConfig,
@@ -63,7 +63,7 @@ export const ToastDataSent = {
   },
   success: function (id) {
     return toast.update(id, {
-      render: toastBootstrap("Data Sent👌"),
+      render: toastBootstrap("Data Sent"),
       type: "success",
       isLoading: false,
       ...toastConfig,
@@ -71,7 +71,7 @@ export const ToastDataSent = {
   },
   error: function (id) {
     return toast.update(id, {
-      render: toastBootstrap("Fail to send 🤯"),
+      render: toastBootstrap("Fail to send"),
       type: "error",
       isLoading: false,
       ...toastConfig,
