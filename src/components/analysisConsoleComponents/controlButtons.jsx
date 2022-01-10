@@ -315,7 +315,7 @@ const uploadDataToDummyServer = (props, startingTime) => {
 const PopUpResult = (props) => {
   setTimeout(() => {
     props.setTestingProgressState(TestingProgress.Finished);
-    ModalResultPopUp(props, ModalResultType.NEGATIVE);
+    ModalResultPopUp(props, ModalResultType.INVALID);
   }, 5000);
 };
 
