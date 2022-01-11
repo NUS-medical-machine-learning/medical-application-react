@@ -2,7 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Pneunostics from "../../resources/images/Pneunostic-Logo.svg";
 import ToggleButton from "react-bootstrap/ToggleButton";
-import firebase from "firebase/compat/app";
+import { SignOut } from "../signIn";
 
 function NavBar({darkMode, setDarkMode}) {
   // const [checked, setChecked] = useState(false);
@@ -19,7 +19,7 @@ function NavBar({darkMode, setDarkMode}) {
         <div className="col ">
           <a
             className="btn btn-danger float-end ms-3"
-            onClick={() => firebase.auth().signOut()}
+            onClick={SignOut}
             href="/login"
           >
             Sign Out

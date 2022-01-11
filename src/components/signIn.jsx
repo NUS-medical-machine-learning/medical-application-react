@@ -7,7 +7,6 @@ import { Navigate } from "react-router-dom";
 
 import Pneunostics from "../resources/images/Pneunostic-Logo.svg";
 
-
 // Configure Firebase.
 const firebaseConfig = {
   apiKey: "AIzaSyBhRwDtF1z86GzQsiD-ElVRpbjn0aQMkDo",
@@ -24,13 +23,15 @@ const uiConfig = {
   // Popup signin flow rather than redirect flow.
   signInFlow: "popup",
   // We will display Google and Facebook as auth providers.
-  signInOptions: [
-    firebase.auth.EmailAuthProvider.PROVIDER_ID,
-  ],
+  signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
   callbacks: {
     // Avoid redirects after sign-in.
     signInSuccessWithAuthResult: () => false,
   },
+};
+
+export const SignOut = () => {
+  firebase.auth().signOut();
 };
 
 function SignInScreen() {
@@ -75,10 +76,8 @@ function SignInScreen() {
       </body>
     );
   }
-  
-  return (
-    <Navigate to="/" />
-  );
+
+  return <Navigate to="/" />;
 }
 
 export default SignInScreen;
