@@ -15,6 +15,7 @@ import { handleBreatheStopSilent } from "./controlButtons";
 import { renewData } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContainer";
 
 import { subjectIdPrefix } from "./subjectIdInput";
+import { SignOut } from "../signIn";
 
 const DEFAULT_SUBJECT_ID = "";
 
@@ -51,7 +52,7 @@ function AnalysisConsole(props) {
     handleBreatheStopSilent();
     setTestingProgressState(TestingProgress.New);
     renewData(chartRef.current);
-
+    SignOut();
     // refreshPage();
   };
 

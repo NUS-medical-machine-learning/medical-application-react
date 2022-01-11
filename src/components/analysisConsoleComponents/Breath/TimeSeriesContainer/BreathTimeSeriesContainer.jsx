@@ -154,7 +154,7 @@ export default function BreathTimeSeriesContainer(props) {
   useEffect(() => {
     const chart = chartRef.current;
 
-    console.log("socket");
+    console.log("New socket set detection");
     socket.on("detection", ({ data }) => {
       const unixTimestamp = data.scores[0][0][0];
       const date = new Date(unixTimestamp * 1000);

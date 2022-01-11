@@ -30,7 +30,8 @@
     "start": "cross-env PORT=3000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "update_code": "yarn run build && yarn global add serve"
   },
   "eslintConfig": {
     "extends": [
