@@ -287,6 +287,9 @@ const uploadDataToDummyServer = (props, startingTime) => {
           ToastDataSent.success(id);
           props.setTestingProgressState(TestingProgress.DataSent);
 
+          let modalResult = ModalResultType.INVALID;
+          let info = "";
+
           fetch("https://www.aiteam.link:8100/upload_file", {
             method: "POST",
             body: bin_data,
@@ -298,7 +301,7 @@ const uploadDataToDummyServer = (props, startingTime) => {
           })
             .then((response) => response.json())
             .then((result) => {
-              let modalResult = ModalResultType.INVALID;
+              info = result.info;
               switch (result.info) {
                 case "negative":
                   console.log("negative");
@@ -315,9 +318,28 @@ const uploadDataToDummyServer = (props, startingTime) => {
                 default:
                   console.log("invalid");
               }
-
-              PopUpResult(props, modalResult);
             });
+
+          let resultData = new FormData();
+          resultData.append("id", props.getFullSubjectId());
+          resultData.append("time", startingTime);
+          resultData.append("info", info);
+          resultData.append("traceback", "");
+          resultData.append("header", "");
+
+          fetch("http://127.0.0.1:8001/save_result", {
+            method: "POST",
+            body: resultData,
+            redirect: "follow",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "POST",
+            },
+          })
+            .then((response) => response.text())
+            .then((result) => console.log(result));
+            
+          PopUpResult(props, modalResult);
         });
       })
       .catch((error) => {
