@@ -264,22 +264,6 @@ const uploadDataToDummyServer = (props, startingTime) => {
 
           console.log("bin_data", bin_data);
 
-          fetch("https://www.aiteam.link:8100/upload_file", {
-            method: "POST",
-            body: bin_data,
-            redirect: "follow",
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Methods": "POST",
-            },
-          })
-            .then((response) => response.json())
-            .then((result) => {
-              if (result.info === "fail") {
-                return console.log(result);
-              }
-            });
-
           let recordData = new FormData();
           recordData.append("id", props.getFullSubjectId());
           recordData.append("time", startingTime);
@@ -302,7 +286,38 @@ const uploadDataToDummyServer = (props, startingTime) => {
 
           ToastDataSent.success(id);
           props.setTestingProgressState(TestingProgress.DataSent);
-          PopUpResult(props);
+
+          fetch("https://www.aiteam.link:8100/upload_file", {
+            method: "POST",
+            body: bin_data,
+            redirect: "follow",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "POST",
+            },
+          })
+            .then((response) => response.json())
+            .then((result) => {
+              let modalResult = ModalResultType.INVALID;
+              switch (result.info) {
+                case "negative":
+                  console.log("negative");
+                  modalResult = ModalResultType.NEGATIVE;
+                  break;
+                case "positive":
+                  console.log("positive");
+                  modalResult = ModalResultType.POSITIVE;
+                  break;
+                case "invalid":
+                  console.log("invalid");
+                  modalResult = ModalResultType.INVALID;
+                  break;
+                default:
+                  console.log("invalid");
+              }
+
+              PopUpResult(props, modalResult);
+            });
         });
       })
       .catch((error) => {
@@ -312,10 +327,10 @@ const uploadDataToDummyServer = (props, startingTime) => {
   }, 5000);
 };
 
-const PopUpResult = (props) => {
+const PopUpResult = (props, modalResult) => {
   setTimeout(() => {
     props.setTestingProgressState(TestingProgress.Finished);
-    ModalResultPopUp(props, ModalResultType.INVALID);
+    ModalResultPopUp(props, modalResult);
   }, 5000);
 };
 
