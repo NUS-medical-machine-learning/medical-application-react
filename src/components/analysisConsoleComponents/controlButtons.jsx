@@ -318,28 +318,28 @@ const uploadDataToDummyServer = (props, startingTime) => {
                 default:
                   console.log("invalid");
               }
+
+              let resultData = new FormData();
+              resultData.append("id", props.getFullSubjectId());
+              resultData.append("time", startingTime);
+              resultData.append("info", info);
+              resultData.append("traceback", "");
+              resultData.append("header", "");
+
+              fetch("http://127.0.0.1:8001/save_result", {
+                method: "POST",
+                body: resultData,
+                redirect: "follow",
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                  "Access-Control-Allow-Methods": "POST",
+                },
+              })
+                .then((response) => response.text())
+                .then((result) => console.log(result));
+
+              PopUpResult(props, modalResult);
             });
-
-          let resultData = new FormData();
-          resultData.append("id", props.getFullSubjectId());
-          resultData.append("time", startingTime);
-          resultData.append("info", info);
-          resultData.append("traceback", "");
-          resultData.append("header", "");
-
-          fetch("http://127.0.0.1:8001/save_result", {
-            method: "POST",
-            body: resultData,
-            redirect: "follow",
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Methods": "POST",
-            },
-          })
-            .then((response) => response.text())
-            .then((result) => console.log(result));
-            
-          PopUpResult(props, modalResult);
         });
       })
       .catch((error) => {
