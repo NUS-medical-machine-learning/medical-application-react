@@ -15,7 +15,6 @@ import { handleBreatheStopSilent } from "./controlButtons";
 import { renewData } from "./Breath/TimeSeriesContainer/BreathTimeSeriesContainer";
 
 import { subjectIdPrefix } from "./subjectIdInput";
-import { SignOut } from "../signIn";
 
 import ModalResult from "./modalResult";
 
@@ -64,7 +63,6 @@ function AnalysisConsole(props) {
     setTestingProgressState(TestingProgress.New);
     setShowModalResult(false);
     renewData(chartRef.current);
-    SignOut();
     // refreshPage();
   };
 
