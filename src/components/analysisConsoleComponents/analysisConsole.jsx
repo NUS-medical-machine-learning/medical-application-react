@@ -26,7 +26,7 @@ function AnalysisConsole(props) {
   const [darkMode, setDarkMode] = useState(false);
   const [subjectId, setSubjectId] = useState(DEFAULT_SUBJECT_ID);
   const [testingProgressState, setTestingProgressState] = useState(
-    TestingProgress.New
+    TestingProgress.SubjectIdReceived
   );
 
   useEffect(() => {
@@ -60,7 +60,7 @@ function AnalysisConsole(props) {
     resetSubjectId();
     setIsLoadingMainButton(false);
     handleBreatheStopSilent();
-    setTestingProgressState(TestingProgress.New);
+    setTestingProgressState(TestingProgress.SubjectIdReceived);
     setShowModalResult(false);
     renewData(chartRef.current);
     // refreshPage();
