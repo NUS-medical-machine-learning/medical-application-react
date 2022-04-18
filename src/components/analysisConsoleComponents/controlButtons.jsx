@@ -36,7 +36,13 @@ function mainButton(props, startingTime, setStartingTime) {
       btnStyle = "btn btn-outline-success btn-lg shadow";
       btnName = "Start Sampling";
       btnOnClick = () => {
-        handleBreatheStart(props, setStartingTime);
+        if (isValidSubjectId(props.subjectId)) {
+          props.setTestingProgressState(TestingProgress.SubjectIdReceived);
+          ToastSubjectIdLocked(props.getFullSubjectId());
+          handleBreatheStart(props, setStartingTime);
+        } else {
+          ToastSubjectIdInvalid();
+        }
       };
       break;
     case TestingProgress.AnalyzingStarted:
@@ -80,36 +86,6 @@ function isValidSubjectId(subjectId) {
   }
 
   return true;
-}
-
-function subjectIdButton(props) {
-  let btnLabel = "";
-  let btnOnClick = () => {};
-
-  switch (props.testingProgressState) {
-    case TestingProgress.New:
-      btnOnClick = () => {
-        if (isValidSubjectId(props.subjectId)) {
-          props.setTestingProgressState(TestingProgress.SubjectIdReceived);
-          ToastSubjectIdLocked(props.getFullSubjectId());
-        } else {
-          ToastSubjectIdInvalid();
-        }
-      };
-      btnLabel = "Lock Subject ID";
-      break;
-    default:
-      btnOnClick = () => {
-        props.resetToNewProgress();
-      };
-      btnLabel = "Refresh Subject ID";
-  }
-
-  return (
-    <button onClick={btnOnClick} className="btn btn-outline-info btn-lg shadow">
-      {btnLabel}
-    </button>
-  );
 }
 
 const postCancelSample = () => {
@@ -362,7 +338,6 @@ function ControlButtons(props) {
   return (
     <div className="d-grid gap-2">
       {mainButton(props, startingTime, setStartingTime)}
-      {subjectIdButton(props)}
     </div>
   );
 }

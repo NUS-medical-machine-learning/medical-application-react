@@ -13,7 +13,7 @@ class SubjectIdInput extends React.Component {
 function inputSubjectIdForm(props) {
   let isDisable;
   switch (props.testingProgressState) {
-    case TestingProgress.New:
+    case TestingProgress.SubjectIdReceived:
       isDisable = false;
       break
     default:
