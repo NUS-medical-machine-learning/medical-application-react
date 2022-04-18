@@ -9,14 +9,14 @@ import {
   ToastStop,
   ToastSubjectIdLocked,
   ToastDataSent,
-  ToastSubjectIdInvalid,
+  ToastSubjectIdInvalid
 } from "./toasts";
 
 import moment from "moment";
 
 import { TestingProgress } from "./testing-progress.js";
 
-import { ModalResultPopUp, ModalResultType } from "./modalResult";
+import { getFile, uploadRecord, uploadFile } from "./http";
 
 const TimeFormat = "YYYY.MM.DD-HH:mm:ss";
 
@@ -28,12 +28,12 @@ function mainButton(props, startingTime, setStartingTime) {
 
   switch (props.testingProgressState) {
     case TestingProgress.New:
-      btnStyle = "btn btn-outline-success btn-lg shadow";
+      btnStyle = "btn btn-outline-info btn-lg shadow";
       btnName = "Start Sampling";
       isDisable = true;
       break;
     case TestingProgress.SubjectIdReceived:
-      btnStyle = "btn btn-outline-success btn-lg shadow";
+      btnStyle = "btn btn-outline-info btn-lg shadow";
       btnName = "Start Sampling";
       btnOnClick = () => {
         if (isValidSubjectId(props.subjectId)) {
@@ -63,9 +63,11 @@ function mainButton(props, startingTime, setStartingTime) {
       isDisable = true;
       break;
     case TestingProgress.Finished:
-      btnStyle = "btn btn-success btn-lg shadow";
+      btnStyle = "btn btn-info btn-lg shadow";
       btnName = "Sampling Completed";
-      isDisable = true;
+      btnOnClick = () => {
+        props.resetToNewProgress();
+      };
       break;
     default:
     // code block
@@ -219,118 +221,20 @@ const uploadDataToDummyServer = (props, startingTime) => {
   const id = ToastDataSent.loading();
 
   setTimeout(() => {
-    let formData = new FormData();
-    console.log("Current time", startingTime);
-    formData.append("time", startingTime);
-
-    let bin_data = "";
-
-    fetch("http://localhost:8001/getfile", {
-      method: "POST",
-      body: formData,
-      redirect: "follow",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST",
-      },
-    })
-      .then((response) => {
+    getFile(id, startingTime, (response) => {
         response.arrayBuffer().then((buffer) => {
-          bin_data = buffer;
+          let bin_data = buffer;
 
-          console.log("bin_data", bin_data);
+          uploadRecord(id, props, startingTime);
 
-          let recordData = new FormData();
-          recordData.append("id", props.getFullSubjectId());
-          recordData.append("time", startingTime);
-
-          for (let value of recordData.values()) {
-            console.log(value);
-          }
-
-          fetch("http://127.0.0.1:8001/record", {
-            method: "POST",
-            body: recordData,
-            redirect: "follow",
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Methods": "POST",
-            },
-          })
-            .then((response) => response.text())
-            .then((result) => console.log(result));
-
-          ToastDataSent.success(id);
-          props.setTestingProgressState(TestingProgress.DataSent);
-
-          let modalResult = ModalResultType.INVALID;
-          let info = "";
-
-          fetch("https://www.aiteam.link:8100/upload_file", {
-            method: "POST",
-            body: bin_data,
-            redirect: "follow",
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Methods": "POST",
-            },
-          })
-            .then((response) => response.json())
-            .then((result) => {
-              info = result.info;
-              switch (result.info) {
-                case "negative":
-                  console.log("negative");
-                  modalResult = ModalResultType.NEGATIVE;
-                  break;
-                case "positive":
-                  console.log("positive");
-                  modalResult = ModalResultType.POSITIVE;
-                  break;
-                case "invalid":
-                  console.log("invalid");
-                  modalResult = ModalResultType.INVALID;
-                  break;
-                default:
-                  console.log("invalid");
-              }
-
-              let resultData = new FormData();
-              resultData.append("id", props.getFullSubjectId());
-              resultData.append("time", startingTime);
-              resultData.append("info", info);
-              resultData.append("traceback", "");
-              resultData.append("header", "");
-
-              fetch("http://127.0.0.1:8001/save_result", {
-                method: "POST",
-                body: resultData,
-                redirect: "follow",
-                headers: {
-                  "Access-Control-Allow-Origin": "*",
-                  "Access-Control-Allow-Methods": "POST",
-                },
-              })
-                .then((response) => response.text())
-                .then((result) => console.log(result));
-
-              PopUpResult(props, modalResult);
-            });
+          uploadFile(id, bin_data, props, startingTime);
         });
-      })
-      .catch((error) => {
-        ToastDataSent.error(id);
-        console.log("error", error);
-      });
+      })      
+
   }, 5000);
 };
 
-const PopUpResult = (props, modalResult) => {
-  setTimeout(() => {
-    props.setTestingProgressState(TestingProgress.Finished);
-    ModalResultPopUp(props, modalResult);
-  }, 5000);
-};
+
 
 function ControlButtons(props) {
   const [startingTime, setStartingTime] = useState("");
