@@ -16,7 +16,7 @@ import moment from "moment";
 
 import { TestingProgress } from "./testing-progress.js";
 
-import { getFile, uploadRecord, uploadFile } from "./http";
+import { getFile, uploadRecord, uploadFile, saveResult } from "./http";
 
 const TimeFormat = "YYYY.MM.DD-HH:mm:ss";
 
@@ -227,7 +227,7 @@ const uploadDataToDummyServer = (props, startingTime) => {
 
           uploadRecord(id, props, startingTime);
 
-          uploadFile(id, bin_data, props, startingTime);
+          uploadFile(id, bin_data, props, startingTime, saveResult);
         });
       })      
 
