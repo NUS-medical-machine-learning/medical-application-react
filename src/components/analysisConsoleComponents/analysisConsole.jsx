@@ -44,6 +44,7 @@ function AnalysisConsole(props) {
 
   const [showModalUploadFile, setShowModalUploadFile] = useState(false);
   const [isFilePicked, setIsFilePicked] = useState(false);
+  const [selectedFile, setSelectedFile] = useState();
 
   const chartRef = useRef(null);
 
@@ -114,6 +115,8 @@ function AnalysisConsole(props) {
 
       <section className="">
         <ModalUploadFile
+          selectedFile={selectedFile}
+          setSelectedFile={setSelectedFile}
           isFilePicked={isFilePicked}
           setIsFilePicked={setIsFilePicked}
           showModalUploadFile={showModalUploadFile}

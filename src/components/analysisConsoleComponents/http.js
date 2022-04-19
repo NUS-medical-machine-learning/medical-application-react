@@ -88,8 +88,27 @@ export function uploadFile(id, bin_data, props, startingTime, processAfter) {
     });
 }
 
-export function dummyProcessAfter(props, startingTime, info) {
-    return;
+export function saveFileResult(props, startingTime, info) {
+  let resultData = new FormData();
+  resultData.append("filename", props.selectedFile.name);
+  resultData.append("time", startingTime);
+  resultData.append("info", info);
+  resultData.append("traceback", "");
+  resultData.append("header", "");
+
+  console.log(resultData);
+
+  fetch("http://127.0.0.1:8001/save_result", {
+    method: "POST",
+    body: resultData,
+    redirect: "follow",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "POST",
+    },
+  })
+    .then((response) => response.text())
+    .then((result) => console.log(result));
 }
 
 export function saveResult(props, startingTime, info) {

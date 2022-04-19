@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 
 import Modal from "react-bootstrap/Modal";
 
-import { uploadFile, dummyProcessAfter } from "./http";
+import { uploadFile, saveFileResult } from "./http";
 
 import { ToastDataSent } from "./toasts";
+
+import moment from "moment";
+
+const TimeFormat = "YYYY.MM.DD-HH:mm:ss";
 
 const handleClose = (props) => () => props.setShowModalUploadFile(false);
 const handleShow = (props) => () => props.setShowModalUploadFile(true);
@@ -12,23 +16,23 @@ const handleShow = (props) => () => props.setShowModalUploadFile(true);
 export const ModalUploadFilePopUp = handleShow;
 
 function ModalUploadFile(props) {
-  const [selectedFile, setSelectedFile] = useState();
+  const [startingTime, setStartingTime] = useState("");
 
   const changeHandler = (event) => {
-    setSelectedFile(event.target.files[0]);
+    props.setSelectedFile(event.target.files[0]);
     props.setIsFilePicked(true);
   };
 
   const handleSubmission = (props) => () => {
+    setStartingTime(moment().format(TimeFormat));
     if (props.isFilePicked) {
       const id = ToastDataSent.loading();
 
       console.log("Start uploading");
-      let startingTime = "";
 
       handleClose(props)();
       setTimeout(() => {
-        uploadFile(id, selectedFile, props, startingTime, dummyProcessAfter);
+        uploadFile(id, props.selectedFile, props, startingTime, saveFileResult);
       }, 1500);
     } else {
       console.log("isFilePicked: False");
