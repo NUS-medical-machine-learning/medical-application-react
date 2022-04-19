@@ -1,5 +1,7 @@
 import React from "react";
 import { toast } from "react-toastify";
+import { ModalResultPopUp } from "./modalResult";
+import { TestingProgress } from "./testing-progress.js";
 
 export const ToastSubjectIdLocked = (fullSubjectId) => {
   return toast.info(
@@ -100,4 +102,11 @@ const toastBootstrap = (mess) => {
       </span>
     </div>
   );
+};
+
+export const PopUpResult = (props, modalResult) => {
+  setTimeout(() => {
+    props.setTestingProgressState(TestingProgress.Finished);
+    ModalResultPopUp(props, modalResult);
+  }, 5000);
 };

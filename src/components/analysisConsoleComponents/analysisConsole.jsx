@@ -18,6 +18,8 @@ import { subjectIdPrefix } from "./subjectIdInput";
 
 import ModalResult from "./modalResult";
 
+import ModalUploadFile from "./uploadFile";
+
 const DEFAULT_SUBJECT_ID = "";
 
 function AnalysisConsole(props) {
@@ -39,6 +41,10 @@ function AnalysisConsole(props) {
   const [currentModalResultType, setCurrentModalResultType] = useState(
     null
   );
+
+  const [showModalUploadFile, setShowModalUploadFile] = useState(false);
+  const [isFilePicked, setIsFilePicked] = useState(false);
+  const [selectedFile, setSelectedFile] = useState();
 
   const chartRef = useRef(null);
 
@@ -62,6 +68,8 @@ function AnalysisConsole(props) {
     handleBreatheStopSilent();
     setTestingProgressState(TestingProgress.SubjectIdReceived);
     setShowModalResult(false);
+    setShowModalUploadFile(false);
+    setIsFilePicked(false);
     renewData(chartRef.current);
     // refreshPage();
   };
@@ -106,7 +114,27 @@ function AnalysisConsole(props) {
       </section>
 
       <section className="">
-        <NavBar darkMode={darkMode} setDarkMode={(bool) => setDarkMode(bool)} />
+        <ModalUploadFile
+          selectedFile={selectedFile}
+          setSelectedFile={setSelectedFile}
+          isFilePicked={isFilePicked}
+          setIsFilePicked={setIsFilePicked}
+          showModalUploadFile={showModalUploadFile}
+          setShowModalUploadFile={setShowModalUploadFile}
+          setShowModalResult={setShowModalResult}
+          setCurrentModalResultType={setCurrentModalResultType}
+          testingProgressState={testingProgressState}
+          setTestingProgressState={setTestingProgressState}
+          resetToNewProgress={resetToNewProgress}
+        />
+      </section>
+
+      <section className="">
+        <NavBar
+          darkMode={darkMode}
+          setDarkMode={(bool) => setDarkMode(bool)}
+          setShowModalUploadFile={setShowModalUploadFile}
+        />
       </section>
 
       <section className="">

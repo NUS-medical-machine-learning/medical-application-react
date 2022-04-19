@@ -4,7 +4,9 @@ import Pneunostics from "../../resources/images/Pneunostic-Logo.svg";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import { SignOut } from "../signIn";
 
-function NavBar({darkMode, setDarkMode}) {
+import { ModalUploadFilePopUp } from "./uploadFile";
+
+function NavBar(props) {
   // const [checked, setChecked] = useState(false);
 
   return (
@@ -26,16 +28,23 @@ function NavBar({darkMode, setDarkMode}) {
           </a>
 
           <ToggleButton
-            className="btn float-end"
+            className="btn float-end ms-3"
             id="toggle-check"
             type="checkbox"
             variant="outline-info"
-            checked={darkMode}
+            checked={props.darkMode}
             value="1"
-            onChange={(e) => setDarkMode(e.currentTarget.checked)}
+            onChange={(e) => props.setDarkMode(e.currentTarget.checked)}
           >
             Dark Mode
           </ToggleButton>
+
+          <button
+            className="btn btn-danger float-end ms-3"
+            onClick={ModalUploadFilePopUp(props)}
+          >
+            Upload HDF5 file
+          </button>
         </div>
       </header>
     </div>
