@@ -90,7 +90,7 @@ export function uploadFile(id, bin_data, props, startingTime, processAfter) {
 
 export function saveFileResult(props, startingTime, info) {
   let resultData = new FormData();
-  resultData.append("filename", props.selectedFile.name);
+  resultData.append("id", props.selectedFile.name);
   resultData.append("time", startingTime);
   resultData.append("info", info);
   resultData.append("traceback", "");
