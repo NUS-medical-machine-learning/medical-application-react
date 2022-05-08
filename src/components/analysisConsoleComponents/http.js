@@ -12,7 +12,7 @@ export function getFile(id, startingTime, processResponse) {
   console.log("Current time", startingTime);
   formData.append("time", startingTime);
 
-  fetch("http://localhost:8001/getfile", {
+  fetch("https://localhost:8001/getfile", {
     method: "POST",
     body: formData,
     redirect: "follow",
@@ -33,7 +33,7 @@ export function uploadRecord(id, props, startingTime) {
   recordData.append("id", props.getFullSubjectId());
   recordData.append("time", startingTime);
 
-  fetch("http://127.0.0.1:8001/record", {
+  fetch("https://127.0.0.1:8001/record", {
     method: "POST",
     body: recordData,
     redirect: "follow",
@@ -96,7 +96,7 @@ export function saveFileResult(props, startingTime, info) {
   resultData.append("traceback", "");
   resultData.append("header", "");
 
-  fetch("http://127.0.0.1:8001/save_result", {
+  fetch("https://127.0.0.1:8001/save_result", {
     method: "POST",
     body: resultData,
     redirect: "follow",
@@ -117,7 +117,7 @@ export function saveResult(props, startingTime, info) {
   resultData.append("traceback", "");
   resultData.append("header", "");
 
-  fetch("http://127.0.0.1:8001/save_result", {
+  fetch("https://127.0.0.1:8001/save_result", {
     method: "POST",
     body: resultData,
     redirect: "follow",
