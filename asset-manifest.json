@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/medical-application-react/static/css/main.decadfc2.chunk.css",
-    "main.js": "/medical-application-react/static/js/main.de744489.chunk.js",
-    "main.js.map": "/medical-application-react/static/js/main.de744489.chunk.js.map",
+    "main.js": "/medical-application-react/static/js/main.767ad362.chunk.js",
+    "main.js.map": "/medical-application-react/static/js/main.767ad362.chunk.js.map",
     "runtime-main.js": "/medical-application-react/static/js/runtime-main.637f5a93.js",
     "runtime-main.js.map": "/medical-application-react/static/js/runtime-main.637f5a93.js.map",
     "static/css/2.bcd48285.chunk.css": "/medical-application-react/static/css/2.bcd48285.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.bcd48285.chunk.css",
     "static/js/2.76923f33.chunk.js",
     "static/css/main.decadfc2.chunk.css",
-    "static/js/main.de744489.chunk.js"
+    "static/js/main.767ad362.chunk.js"
   ]
 }
