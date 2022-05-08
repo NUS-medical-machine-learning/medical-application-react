@@ -109,6 +109,8 @@ export function saveFileResult(props, startingTime, info) {
     .then((result) => console.log(result));
 }
 
+// Trigger
+
 export function saveResult(props, startingTime, info) {
   let resultData = new FormData();
   resultData.append("id", props.getFullSubjectId());
