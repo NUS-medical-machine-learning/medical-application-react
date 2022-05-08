@@ -1,4 +1,5 @@
 {
+  "homepage": "https://nus-medical-machine-learning.github.io/medical-application-react/",
   "name": "medical-application-react",
   "version": "0.1.0",
   "private": true,
@@ -12,6 +13,7 @@
     "chart.js": "^3.6.2",
     "chartjs-adapter-moment": "^1.0.0",
     "firebase": "^9.6.1",
+    "gh-pages": "^3.2.3",
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.4",
@@ -27,6 +29,8 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "cross-env PORT=3000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
