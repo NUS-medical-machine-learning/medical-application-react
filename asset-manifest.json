@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/static/css/main.decadfc2.chunk.css",
+    "main.js": "/static/js/main.de744489.chunk.js",
+    "main.js.map": "/static/js/main.de744489.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.b7be62dc.js",
+    "runtime-main.js.map": "/static/js/runtime-main.b7be62dc.js.map",
+    "static/css/2.71642732.chunk.css": "/static/css/2.71642732.chunk.css",
+    "static/js/2.76923f33.chunk.js": "/static/js/2.76923f33.chunk.js",
+    "static/js/2.76923f33.chunk.js.map": "/static/js/2.76923f33.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.71642732.chunk.css.map": "/static/css/2.71642732.chunk.css.map",
+    "static/css/main.decadfc2.chunk.css.map": "/static/css/main.decadfc2.chunk.css.map",
+    "static/js/2.76923f33.chunk.js.LICENSE.txt": "/static/js/2.76923f33.chunk.js.LICENSE.txt",
+    "static/media/Pneunostic-Logo.c1b14dff.svg": "/static/media/Pneunostic-Logo.c1b14dff.svg",
+    "static/media/bootstrap-icons.css": "/static/media/bootstrap-icons.c1d7432e.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.b7be62dc.js",
+    "static/css/2.71642732.chunk.css",
+    "static/js/2.76923f33.chunk.js",
+    "static/css/main.decadfc2.chunk.css",
+    "static/js/main.de744489.chunk.js"
+  ]
+}
